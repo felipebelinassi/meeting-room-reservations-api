@@ -1,18 +1,8 @@
-import { buildSchema } from 'graphql';
+import { GraphQLSchema } from 'graphql';
+import query from './queries';
+import mutation from './mutations';
 
-const schema = buildSchema(`
-  type User {
-    id: ID
-    name: String
-    age: Int
-  }
-  type Query {
-    user(id: ID!): User
-    users: [User]
-  }
-  type Mutation {
-    createUser(name: String!, age: Int!): User
-  }
-`);
-
-export default schema;
+export default new GraphQLSchema({
+  query,
+  mutation,
+});

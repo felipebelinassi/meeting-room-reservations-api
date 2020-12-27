@@ -2,7 +2,6 @@ import express from 'express';
 import { graphqlHTTP } from 'express-graphql';
 import schema from './schema';
 import config from './config';
-import initDatabase from './database';
 
 export const app = express();
 
@@ -17,8 +16,6 @@ app.use('/graphql', graphqlHTTP({
 
 export function start(port: number): Promise<void> {
   return new Promise<void>((resolve) => {
-    initDatabase(config.database);
-
     app.listen(port, () => resolve());
   });
 }

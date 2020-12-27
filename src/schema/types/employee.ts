@@ -4,7 +4,7 @@ const Employee = new GraphQLObjectType({
   name: 'Employee',
   description: 'Employee type definition',
   fields: () => ({
-    id: {
+    employeeId: {
       type: new GraphQLNonNull(GraphQLID),
       description: 'Databse ID of an employee',
     },

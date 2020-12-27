@@ -1,7 +1,8 @@
 import { GraphQLList } from 'graphql';
 import Employee from '../types/employee';
+import listEmployees from '../../business/list-employees';
 
 export default {
   type: new GraphQLList(Employee),
-  resolve: (_: any, args: any) => console.log(_, args),
+  resolve: () => listEmployees(),
 };

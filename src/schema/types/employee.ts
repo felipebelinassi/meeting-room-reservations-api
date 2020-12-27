@@ -31,6 +31,7 @@ const Employee = new GraphQLObjectType({
     password: {
       type: new GraphQLNonNull(GraphQLString),
       description: 'Employee password',
+      resolve: () => '******',
     },
   }),
 });

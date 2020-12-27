@@ -18,8 +18,14 @@ const createRepository = (prisma: PrismaClient) => {
     return employee;
   };
 
+  const listEmployees = async () => {
+    const employees = await prisma.employee.findMany();
+    return employees;
+  };
+
   return {
     createEmployee,
+    listEmployees,
   };
 };
 

@@ -3,7 +3,7 @@ package-lock.json
 yarn.lock
 
 # Build files
-.build
+/build
 
 # Logs
 logs

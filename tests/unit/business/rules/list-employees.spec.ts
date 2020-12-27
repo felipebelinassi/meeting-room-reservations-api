@@ -1,4 +1,5 @@
 import listEmployees from '../../../../src/business/list-employees';
+import loggerMock from '../../../doubles/mocks/logger';
 
 const listEmployeesSpy = jest.fn().mockReturnValue({});
 jest.mock('../../../../src/repositories', () => 
@@ -29,7 +30,7 @@ describe('List employees unit tests', () => {
 
     listEmployeesSpy.mockResolvedValue(expectedResponse);
 
-    const response = await listEmployees();
+    const response = await listEmployees(loggerMock);
     expect(response).toEqual(expectedResponse);
   });
 });

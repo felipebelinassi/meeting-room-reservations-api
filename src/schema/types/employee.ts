@@ -1,12 +1,12 @@
 import { GraphQLObjectType, GraphQLNonNull, GraphQLID, GraphQLString } from 'graphql';
 
-const Employee = new GraphQLObjectType({
+const employee = new GraphQLObjectType({
   name: 'Employee',
   description: 'Employee type definition',
   fields: () => ({
     employeeId: {
       type: new GraphQLNonNull(GraphQLID),
-      description: 'Databse ID of an employee',
+      description: 'Database ID of an employee',
     },
     firstName: {
       type: new GraphQLNonNull(GraphQLString),
@@ -36,4 +36,4 @@ const Employee = new GraphQLObjectType({
   }),
 });
 
-export default Employee;
+export default employee;

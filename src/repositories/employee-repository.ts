@@ -1,16 +1,9 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Employee } from '@prisma/client';
 
-interface Employee {
-  firstName: string;
-  lastName: string;
-  username: string;
-  position: string;
-  email: string;
-  password: string;
-}
+export interface EmployeeParams extends Omit<Employee, 'employeeId' | 'createdAt' | 'updatedAt'> {}
 
 const createRepository = (prisma: PrismaClient) => {
-  const createEmployee = async (params: Employee) => {
+  const createEmployee = async (params: EmployeeParams): Promise<Employee> => {
     const employee = await prisma.employee.create({
       data: { ...params },
     });
@@ -18,7 +11,7 @@ const createRepository = (prisma: PrismaClient) => {
     return employee;
   };
 
-  const listEmployees = async () => {
+  const listEmployees = async (): Promise<Employee[]> => {
     const employees = await prisma.employee.findMany();
     return employees;
   };

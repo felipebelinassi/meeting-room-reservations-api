@@ -1,9 +1,12 @@
 import * as server from '../../../src/app';
 
+jest.mock('../../../src/logger', () => () => ({
+  info: jest.fn(),
+  child: jest.fn(),
+}));
 jest.mock('express-graphql', () => ({
   graphqlHTTP: () => jest.fn(),
 }));
-
 jest.mock('express', () => {
   const reqMock = {
     app: {

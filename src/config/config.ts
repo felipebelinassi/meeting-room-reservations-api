@@ -17,6 +17,10 @@ const loadConfig = (schema: Joi.ObjectSchema, envs: NodeJS.ProcessEnv) => {
       name, 
       version,
     },
+    logger: {
+      enabled: envVars.LOGGER_ENABLED,
+      level: envVars.LOGGER_LEVEL,
+    },
     database: {
       url: envVars.DATABASE_URL,
     },

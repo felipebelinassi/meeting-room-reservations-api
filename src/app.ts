@@ -1,25 +1,17 @@
 import express from 'express';
 import { graphqlHTTP } from 'express-graphql';
-import { GraphiQLOptions } from 'express-graphql/renderGraphiQL';
 import schema from './schema';
-import resolvers from './schema/resolvers';
+import config from './config';
 
 export const app = express();
 
+app.locals.config = config;
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use('/graphql', graphqlHTTP({
   schema,
-  rootValue: resolvers,
-  graphiql: {
-    defaultQuery: `{
-      users { 
-        name
-        age
-      }
-    }`,
-  } as GraphiQLOptions,
+  graphiql: true,
 }));
 
 export function start(port: number): Promise<void> {

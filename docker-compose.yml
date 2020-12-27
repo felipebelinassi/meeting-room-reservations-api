@@ -3,18 +3,20 @@ version: '3'
 services:
   postgres:
     image: postgres
+    restart: always
     environment:
-      POSTGRES_PASSWORD: "Postgres2020!"
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres@2020!
     ports:
-      - "15432:5432"
+      - '5432:5432'
     networks:
       - postgres-network
       
   pgadmin:
     image: dpage/pgadmin4
     environment:
-      PGADMIN_DEFAULT_EMAIL: "changeme@email.com"
-      PGADMIN_DEFAULT_PASSWORD: "PgAdmin2020!"
+      PGADMIN_DEFAULT_EMAIL: changeme@email.com
+      PGADMIN_DEFAULT_PASSWORD: pgadmin@2020!
     ports:
       - "16543:80"
     depends_on:

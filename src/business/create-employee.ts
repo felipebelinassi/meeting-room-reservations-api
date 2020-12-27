@@ -1,7 +1,7 @@
 import authService from '../services/auth-service';
-import repositories from '../repositories';
+import createRepositories from '../repositories';
 
-interface Employee {
+export interface Employee {
   firstName: string;
   lastName: string;
   username: string;
@@ -11,7 +11,7 @@ interface Employee {
 }
 
 const createEmployee = async (params: Employee) => {
-  const { employeeRepository } = repositories;
+  const { employeeRepository } = createRepositories();
 
   const { password } = params;
 

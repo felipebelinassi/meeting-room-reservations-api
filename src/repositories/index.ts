@@ -3,6 +3,8 @@ import employee from './employee-repository';
 
 const prisma = new PrismaClient();
 
-export default {
-  employeeRepository: employee(prisma),
-};
+export default function createRepositories() {
+  return {
+    employeeRepository: employee(prisma),
+  };
+}

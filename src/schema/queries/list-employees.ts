@@ -1,8 +1,13 @@
 import { GraphQLList } from 'graphql';
+import { Context } from '../../context';
 import Employee from '../types/employee';
-import listEmployees from '../../business/list-employees';
+
+interface EmployeesArguments {}
 
 export default {
   type: new GraphQLList(Employee),
-  resolve: () => listEmployees(),
+  resolve: (_: any, args: EmployeesArguments, context: Context) => {
+    const logger = context.logger.child({ feature: 'List of employees' });
+    return context.rules.listEmployees(logger);
+  },
 };

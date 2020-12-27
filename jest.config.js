@@ -8,7 +8,7 @@ module.exports = {
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
   collectCoverage: true,
   collectCoverageFrom: ['src/**/*.{ts,tsx}'],
-  testMatch: ['**/tests/unit/**/(*.)+(spec|test).+(ts|tsx|js)'],
+  testMatch: ['**/tests/unit/**/(*.)+(spec|test).+(ts|tsx)'],
   clearMocks: true,
   setupFiles: ['dotenv/config'],
 };

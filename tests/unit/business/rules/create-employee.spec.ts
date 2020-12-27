@@ -1,4 +1,5 @@
 import createEmployee from '../../../../src/business/create-employee';
+import loggerMock from '../../../doubles/mocks/logger';
 
 const createEmployeeSpy = jest.fn().mockReturnValue({});
 jest.mock('../../../../src/repositories', () => 
@@ -20,7 +21,7 @@ describe('Create employee unit tests', () => {
 
     createEmployeeSpy.mockResolvedValue({ ...newEmployee, password: '****' });
 
-    const response = await createEmployee(newEmployee);
+    const response = await createEmployee(loggerMock, newEmployee);
     expect(response).toEqual(expect.objectContaining({
       ...newEmployee,
       password: expect.any(String),

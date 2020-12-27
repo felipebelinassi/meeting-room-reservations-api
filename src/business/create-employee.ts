@@ -1,21 +1,16 @@
+import type { Logger } from 'pino';
+import { Employee } from '@prisma/client';
 import authService from '../services/auth-service';
 import createRepositories from '../repositories';
+import { EmployeeParams } from '../repositories/employee-repository';
 
-export interface Employee {
-  firstName: string;
-  lastName: string;
-  username: string;
-  position: string;
-  email: string;
-  password: string;
-}
+export type CreateEmployee = (logger: Logger, params: EmployeeParams) => Promise<Employee>;
 
-const createEmployee = async (params: Employee) => {
+const createEmployee = async (logger: Logger, params: EmployeeParams): Promise<Employee> => {
+  logger.info('Registering a new employee to application');
+
   const { employeeRepository } = createRepositories();
-
-  const { password } = params;
-
-  const hashedPassword = await authService().hashPassword(password);
+  const hashedPassword = await authService().hashPassword(params.password);
 
   return employeeRepository.createEmployee({
     ...params, password: hashedPassword,

@@ -1,9 +1,16 @@
+import type { Logger } from 'pino';
 import { PrismaClient, Employee } from '@prisma/client';
 
 export interface EmployeeParams extends Omit<Employee, 'employeeId' | 'createdAt' | 'updatedAt'> {}
 
-const createRepository = (prisma: PrismaClient) => {
-  const createEmployee = async (params: EmployeeParams): Promise<Employee> => {
+export interface EmployeeRepository {
+  create: (params: EmployeeParams) => Promise<Employee>;
+  getList: () => Promise<Employee[]>;
+}
+
+export default (logger: Logger, prisma: PrismaClient): EmployeeRepository => {
+  const create = async (params: EmployeeParams) => {
+    logger.info('Register a new employee to database');
     const employee = await prisma.employee.create({
       data: { ...params },
     });
@@ -11,15 +18,14 @@ const createRepository = (prisma: PrismaClient) => {
     return employee;
   };
 
-  const listEmployees = async (): Promise<Employee[]> => {
+  const getList = async () => {
+    logger.info('Get list of registered employees');
     const employees = await prisma.employee.findMany();
     return employees;
   };
 
   return {
-    createEmployee,
-    listEmployees,
+    create,
+    getList,
   };
 };
-
-export default createRepository;

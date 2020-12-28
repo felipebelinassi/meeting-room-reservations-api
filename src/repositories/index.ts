@@ -1,10 +1,13 @@
+import type { Logger } from 'pino';
 import { PrismaClient } from '@prisma/client';
-import employee from './employee-repository';
+import employeeRepository, { EmployeeRepository } from './employee-repository';
 
-const prisma = new PrismaClient();
+export interface Repositories {
+  employee: EmployeeRepository;
+}
 
-export default function createRepositories() {
+export default function createRepositories(logger: Logger, prisma: PrismaClient): Repositories {
   return {
-    employeeRepository: employee(prisma),
+    employee: employeeRepository(logger, prisma),
   };
 }

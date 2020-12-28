@@ -1,3 +1,10 @@
+# Package lock
+package-lock.json
+yarn.lock
+
+# Build files
+/build
+
 # Logs
 logs
 *.log
@@ -102,3 +109,6 @@ dist
 
 # TernJS port file
 .tern-port
+
+# VSCode
+.vscode

@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres@2020!
+    ports:
+      - '5432:5432'
+    networks:
+      - postgres-network
+      
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: changeme@email.com
+      PGADMIN_DEFAULT_PASSWORD: pgadmin@2020!
+    ports:
+      - "16543:80"
+    depends_on:
+      - postgres
+    networks:
+      - postgres-network
+
+networks: 
+  postgres-network:
+    driver: bridge

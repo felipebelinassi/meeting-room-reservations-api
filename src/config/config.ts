@@ -22,7 +22,9 @@ const loadConfig = (schema: Joi.ObjectSchema, envs: NodeJS.ProcessEnv) => {
       level: envVars.LOGGER_LEVEL,
     },
     database: {
-      url: envVars.DATABASE_URL,
+      dialect: envVars.DATABASE_DIALECT,
+      uri: envVars.DATABASE_URL,
+      timezone: envVars.DATABASE_TIMEZONE,
     },
   };
 };

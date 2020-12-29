@@ -1,4 +1,5 @@
 import { Model, Optional, DataTypes } from 'sequelize';
+import { CustomModel } from './types';
 import db from './instance';
 
 export interface RoomAttributes {
@@ -10,12 +11,13 @@ export interface RoomAttributes {
 
 interface RoomCreationAttributes extends Optional<RoomAttributes, 'roomId'> {}
 
-interface RoomInstance extends Model<RoomAttributes, RoomCreationAttributes> {}
+interface RoomInstance extends Model<RoomAttributes, RoomCreationAttributes>, RoomAttributes {}
 
-const Room = db.sequelize.define<RoomInstance>('Room', {
+const Room: CustomModel<RoomInstance> = db.sequelize.define('Room', {
   roomId: {
     type: DataTypes.UUID,
-    field: 'employee_id',
+    field: 'room_id',
+    primaryKey: true,
   },
   description: {
     type: DataTypes.STRING,
@@ -32,6 +34,15 @@ const Room = db.sequelize.define<RoomInstance>('Room', {
   createdAt: false,
   updatedAt: false,
   tableName: 'room',
+  schema: 'meeting',
 });
+
+Room.associate = (models) => {
+  Room.hasMany(models.Reservation, { 
+    sourceKey: 'roomId',
+    foreignKey: 'roomId',
+    as: 'roomReservations',
+  });
+};
 
 export default Room;

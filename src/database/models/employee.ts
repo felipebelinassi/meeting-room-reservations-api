@@ -1,4 +1,5 @@
 import { Model, Optional, DataTypes } from 'sequelize';
+import { CustomModel } from './types';
 import db from './instance';
 
 export interface EmployeeAttributes {
@@ -12,11 +13,11 @@ export interface EmployeeAttributes {
   updatedAt?: string;
 }
 
-interface EmployeeCreationAttributes extends Optional<EmployeeAttributes, 'employeeId'> {}
+interface EmployeeCreationAttributes extends Optional<EmployeeAttributes, 'employeeId' | 'createdAt' | 'updatedAt'> {}
 
 interface EmployeeInstance extends Model<EmployeeAttributes, EmployeeCreationAttributes>, EmployeeAttributes {}
 
-const Employee = db.sequelize.define<EmployeeInstance>('Employee', {
+const Employee: CustomModel<EmployeeInstance> = db.sequelize.define('Employee', {
   employeeId: {
     type: DataTypes.UUID,
     field: 'employee_id',
@@ -51,5 +52,13 @@ const Employee = db.sequelize.define<EmployeeInstance>('Employee', {
   tableName: 'employee',
   schema: 'meeting',
 });
+
+Employee.associate = (models) => {
+  Employee.hasMany(models.Reservation, { 
+    sourceKey: 'employeeId',
+    foreignKey: 'reservedBy',
+    as: 'employeeReservations',
+  });
+};
 
 export default Employee;

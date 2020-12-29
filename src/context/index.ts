@@ -1,23 +1,11 @@
 import type { Logger } from 'pino';
-import { Employee } from '@prisma/client';
-import createEmployee from '../business/create-employee';
-import listEmployees from '../business/list-employees';
-import { EmployeeParams } from '../repositories/employee-repository';
+import { PrismaClient } from '@prisma/client';
+import createRepositories, { Repositories } from '../repositories';
 
-export interface Context {
-  logger: Logger,
-  rules: {
-    createEmployee: (logger: Logger, params: EmployeeParams) => Promise<Employee>;
-    listEmployees: (logger: Logger) => Promise<Employee[]>;
-  }
-}
+export interface Context extends Repositories {}
 
-const context = (logger: Logger) => ({
-  logger,
-  rules: {
-    createEmployee,
-    listEmployees,
-  },
-});
+const prisma = new PrismaClient();
+
+const context = (logger: Logger): Context => createRepositories(logger, prisma);
 
 export default context;

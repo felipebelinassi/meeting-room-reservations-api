@@ -6,5 +6,5 @@ interface EmployeesArguments {}
 
 export default {
   type: new GraphQLList(Employee),
-  resolve: (_: any, args: EmployeesArguments, context: Context) => context.employee.getList(),
+  resolve: async (_: any, args: EmployeesArguments, context: Context) => context.employee.getList(),
 };

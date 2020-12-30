@@ -8,8 +8,6 @@ const models = {
   Reservation,
 };
 
-export type Models = typeof models;
-
 Object.values(models).map(model => {
   if (model.associate) model.associate(models);
   return models;

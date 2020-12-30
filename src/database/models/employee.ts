@@ -15,7 +15,11 @@ export interface EmployeeAttributes {
 
 interface EmployeeCreationAttributes extends Optional<EmployeeAttributes, 'employeeId' | 'createdAt' | 'updatedAt'> {}
 
-interface EmployeeInstance extends Model<EmployeeAttributes, EmployeeCreationAttributes>, EmployeeAttributes {}
+interface EmployeeInstance 
+  extends Model<EmployeeAttributes, EmployeeCreationAttributes>, 
+  EmployeeAttributes {
+  toJSON(): Omit<EmployeeAttributes, 'password'>
+}
 
 const Employee: CustomModel<EmployeeInstance> = db.sequelize.define('Employee', {
   employeeId: {
@@ -32,6 +36,9 @@ const Employee: CustomModel<EmployeeInstance> = db.sequelize.define('Employee', 
     field: 'last_name',
   },
   username: {
+    type: DataTypes.STRING,
+  },
+  position: {
     type: DataTypes.STRING,
   },
   email: {

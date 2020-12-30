@@ -9,6 +9,7 @@ export interface EmployeeParams extends Omit<EmployeeAttributes, 'employeeId' | 
 export interface EmployeeRepository {
   create: (params: EmployeeParams) => Promise<EmployeeAttributes>;
   getList: () => Promise<EmployeeAttributes[]>;
+  getByEmail: (email: string) => Promise<EmployeeAttributes | null>;
 }
 
 export default (logger: Logger): EmployeeRepository => {
@@ -30,8 +31,14 @@ export default (logger: Logger): EmployeeRepository => {
     return employees;
   };
 
+  const getByEmail = async (email: string) => {
+    logger.info('Find registered employee by email');
+    return Employee.findOne({ where: { email }});
+  };
+
   return {
     create,
     getList,
+    getByEmail,
   };
 };

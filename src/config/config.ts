@@ -23,10 +23,6 @@ const loadConfig = (schema: Joi.ObjectSchema, envs: NodeJS.ProcessEnv) => {
     },
     database: {
       uri: envVars.DATABASE_URI,
-      database: envVars.DATABASE_NAME,
-      user: envVars.DATABASE_USER,
-      password: envVars.DATABASE_PASSWORD,
-      host: envVars.DATABASE_HOST,
       dialect: envVars.DATABASE_DIALECT,
       timezone: envVars.TIMEZONE,
     },

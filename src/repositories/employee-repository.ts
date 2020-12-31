@@ -15,7 +15,6 @@ export default (logger: Logger): EmployeeRepository => {
   const create = async (params: EmployeeParams) => {
     logger.info('Register a new employee to database');
     const employee = await Employee.create({ ...params });
-
     return employee;
   };
 
@@ -29,6 +28,7 @@ export default (logger: Logger): EmployeeRepository => {
     logger.info('Find registered employee by email');
     return Employee.findOne({ 
       where: { email }, 
+      raw: true,
     });
   };
 

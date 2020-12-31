@@ -1,7 +1,9 @@
 import { GraphQLNonNull, GraphQLString } from 'graphql';
 import { Context } from '../../context';
 import tokenType from '../types/token';
-import { comparePasswords, generateToken } from '../../utils/authentication';
+import services from '../../services';
+
+const { authService } = services;
 
 interface CreateTokenArguments {
   email: string;
@@ -22,17 +24,17 @@ export default {
     },
   },
   resolve: async (_: any, { email, password }: CreateTokenArguments, context: Context) => {
-    const employee = await context.employee.getByEmail(email);
+    const employee = await context.repositories.employee.getByEmail(email);
     
     if (!employee) {
       throw new Error('The email was not found in the database');
     }
 
-    if (!(await comparePasswords(password, employee.password))) {
+    if (!(await authService.comparePasswords(password, employee.password))) {
       throw new Error('Employee authentication failed');
     }
 
-    const token = generateToken({ ...employee});
+    const token = authService.generateToken({ ...employee });
     return { token, email };
   },
 };

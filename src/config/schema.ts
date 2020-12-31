@@ -8,4 +8,6 @@ export default joi.object({
   TIMEZONE: joi.string().required(),
   LOGGER_ENABLED: joi.string().default('true').required(),
   LOGGER_LEVEL: joi.string().lowercase().valid('info', 'warn', 'error', 'debug', 'silly'),
+  JWT_SECRET_KEY: joi.string().required(),
+  TOKEN_EXPIRES_IN: joi.string().required(),
 }).unknown();

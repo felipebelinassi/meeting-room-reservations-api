@@ -1,7 +1,7 @@
 import type { Logger } from 'pino';
 import sequelize from 'sequelize';
 import db from '../database/models/instance';
-import Room, { RoomAttributes } from '../database/models/room';
+import Room from '../database/models/room';
 
 export interface RoomRepository {
   getAvailable: (startTime: string, endTime: string) => Promise<RoomAttributes[]>;

@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request } from 'express';
 import { graphqlHTTP } from 'express-graphql';
 import schema from './schema';
 import config from './config';
@@ -13,11 +13,11 @@ app.locals.logger = logger;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/graphql', graphqlHTTP({
+app.use('/graphql', graphqlHTTP((req) => ({
   schema,
-  graphiql: true,
-  context: context(logger),
-}));
+  graphiql: { headerEditorEnabled: true },
+  context: context(req as Request),
+})));
 
 export function start(port: number): Promise<void> {
   return new Promise<void>((resolve) => {

@@ -8,9 +8,4 @@ const models = {
   Reservation,
 };
 
-Object.values(models).map(model => {
-  if (model.associate) model.associate(models);
-  return models;
-});
-
 export default models;

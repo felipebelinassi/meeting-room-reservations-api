@@ -1,8 +1,21 @@
-import type { Logger } from 'pino';
+import { Request } from 'express';
 import createRepositories, { Repositories } from '../repositories';
 
-export interface Context extends Repositories {}
+export interface Context {
+  request: Request;
+  repositories: Repositories;
+}
 
-const context = (logger: Logger): Context => createRepositories(logger);
+const context = (req: Request): Context => {
+  const { logger } = req.app.locals;
+
+  return {
+    request: req,
+    repositories: {
+      ...createRepositories(logger),
+    },
+  };
+};
 
 export default context;
+

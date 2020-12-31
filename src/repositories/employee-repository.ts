@@ -1,6 +1,5 @@
 import type { Logger } from 'pino';
 import models from '../database/models';
-import { EmployeeAttributes } from '../database/models/employee';
 
 const { Employee } = models;
 
@@ -17,7 +16,6 @@ export default (logger: Logger): EmployeeRepository => {
     logger.info('Register a new employee to database');
     const employee = await Employee.create({
       ...params,
-      employeeId: 'a6fbe83a-1f69-4d7a-b894-328ec62fd97a',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });
@@ -33,7 +31,10 @@ export default (logger: Logger): EmployeeRepository => {
 
   const getByEmail = async (email: string) => {
     logger.info('Find registered employee by email');
-    return Employee.findOne({ where: { email }});
+    return Employee.findOne({ 
+      where: { email }, 
+      raw: true, 
+    });
   };
 
   return {

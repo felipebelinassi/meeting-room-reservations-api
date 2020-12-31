@@ -5,7 +5,7 @@ import services from '../../services';
 
 const { authService } = services;
 
-interface CreateTokenArguments {
+interface CreateTokenQueryArgs {
   email: string;
   password: string;
 }
@@ -23,7 +23,7 @@ export default {
       type: new GraphQLNonNull(GraphQLString),
     },
   },
-  resolve: async (_: any, { email, password }: CreateTokenArguments, context: Context) => {
+  resolve: async (_: any, { email, password }: CreateTokenQueryArgs, context: Context) => {
     const employee = await context.repositories.employee.getByEmail(email);
     
     if (!employee) {

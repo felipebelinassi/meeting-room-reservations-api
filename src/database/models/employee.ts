@@ -1,27 +1,22 @@
 import { Model, Optional, DataTypes } from 'sequelize';
-import { CustomModel } from './types';
 import db from './instance';
+import services from '../../services';
+import Reservation from './reservation';
 
-export interface EmployeeAttributes {
-  employeeId: string;
-  firstName?: string;
-  lastName: string;
-  username: string;
-  email: string;
-  password: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
+const { authService } = services;
 
 interface EmployeeCreationAttributes extends Optional<EmployeeAttributes, 'employeeId' | 'createdAt' | 'updatedAt'> {}
 
-interface EmployeeInstance extends Model<EmployeeAttributes, EmployeeCreationAttributes>, EmployeeAttributes {}
+interface EmployeeInstance 
+  extends Model<EmployeeAttributes, EmployeeCreationAttributes>, 
+  EmployeeAttributes {}
 
-const Employee: CustomModel<EmployeeInstance> = db.sequelize.define('Employee', {
+const Employee = db.sequelize.define<EmployeeInstance>('Employee', {
   employeeId: {
-    type: DataTypes.UUID,
+    type: DataTypes.UUIDV4,
     field: 'employee_id',
     primaryKey: true,
+    defaultValue: DataTypes.UUIDV4,
   },
   firstName: {
     type: DataTypes.STRING,
@@ -33,9 +28,14 @@ const Employee: CustomModel<EmployeeInstance> = db.sequelize.define('Employee', 
   },
   username: {
     type: DataTypes.STRING,
+    unique: true,
+  },
+  position: {
+    type: DataTypes.STRING,
   },
   email: {
     type: DataTypes.STRING,
+    unique: true,
   },
   password: {
     type: DataTypes.STRING,
@@ -43,22 +43,28 @@ const Employee: CustomModel<EmployeeInstance> = db.sequelize.define('Employee', 
   createdAt: {
     type: DataTypes.DATE,
     field: 'created_at',
+    defaultValue: DataTypes.NOW,
   },
   updatedAt: {
     type: DataTypes.DATE,
     field: 'updated_at',
+    defaultValue: DataTypes.NOW,
   },
 }, {
   tableName: 'employee',
   schema: 'meeting',
 });
 
-Employee.associate = (models) => {
-  Employee.hasMany(models.Reservation, { 
-    sourceKey: 'employeeId',
-    foreignKey: 'reservedBy',
-    as: 'employeeReservations',
-  });
-};
+Employee.hasMany(Reservation, {
+  sourceKey: 'employeeId',
+  foreignKey: 'reservedBy',
+  as: 'employeeReservations',
+});
+
+Employee.addHook('beforeCreate', async (instance: EmployeeInstance) => {
+  const { password } = instance;
+  const hashedPassword = await authService.hashPassword(password);
+  instance.setDataValue('password', hashedPassword);
+});
 
 export default Employee;

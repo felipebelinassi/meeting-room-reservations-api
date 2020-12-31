@@ -3,7 +3,7 @@ import { Context } from '../../context';
 import Room from '../types/room';
 import { formatDateTime, normalizeTimePeriod } from '../../utils/date-formatters';
 
-interface RoomQueryArguments {
+interface RoomsQueryArgs {
   date: string;
   startHour: string;
   endHour: string;
@@ -25,7 +25,7 @@ export default {
       type: GraphQLString,
     },
   },
-  resolve: async (_: any, args: RoomQueryArguments, context: Context) => {
+  resolve: async (_: any, args: RoomsQueryArgs, context: Context) => {
     const { date } = args;
     const startHour = normalizeTimePeriod(args.startHour);
     const endHour = normalizeTimePeriod(args.endHour);
@@ -37,7 +37,7 @@ export default {
       throw new Error('The meeting ending time needs to be greater than the starting time');
     }
 
-    const availableRooms = await context.room.getAvailable(startTime, endTime);
+    const availableRooms = await context.repositories.room.getAvailable(startTime, endTime);
 
     return availableRooms.filter(room => 
       room.openAt <= startHour && room.closeAt >= endHour,

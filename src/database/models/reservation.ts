@@ -1,32 +1,28 @@
 import { Model, Optional, DataTypes } from 'sequelize';
-import { CustomModel } from './types';
 import db from './instance';
-
-export interface ReservationAttributes {
-  reservationId: string;
-  roomId: string;
-  reservedBy: string;
-  startAt: string;
-  endAt: string;
-}
 
 interface ReservationCreationAttributes extends Optional<ReservationAttributes, 'reservationId'> {}
 
-interface ReservationInstance extends Model<ReservationAttributes, ReservationCreationAttributes>, ReservationAttributes {}
+interface ReservationInstance
+  extends Model<ReservationAttributes, ReservationCreationAttributes>,
+  ReservationAttributes {}
 
-const Reservation: CustomModel<ReservationInstance> = db.sequelize.define('Reservation', {
+const Reservation = db.sequelize.define<ReservationInstance>('Reservation', {
   reservationId: {
-    type: DataTypes.UUID,
+    type: DataTypes.UUIDV4,
     field: 'reservation_id',
     primaryKey: true,
+    defaultValue: DataTypes.UUIDV4,
   },
   roomId: {
-    type: DataTypes.UUID,
+    type: DataTypes.UUIDV4,
     field: 'room_id',
+    defaultValue: DataTypes.UUIDV4,
   },
   reservedBy: {
-    type: DataTypes.UUID,
+    type: DataTypes.UUIDV4,
     field: 'reserved_by',
+    defaultValue: DataTypes.UUIDV4,
   },
   startAt: {
     type: DataTypes.DATE,
@@ -42,9 +38,5 @@ const Reservation: CustomModel<ReservationInstance> = db.sequelize.define('Reser
   tableName: 'reservation',
   schema: 'meeting',
 });
-
-Reservation.associate = (models) => {
-  Reservation.hasOne(models.Room, { sourceKey: 'roomId' });
-};
 
 export default Reservation;

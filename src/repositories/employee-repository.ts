@@ -1,6 +1,5 @@
 import type { Logger } from 'pino';
 import models from '../database/models';
-import { EmployeeAttributes } from '../database/models/employee';
 
 const { Employee } = models;
 
@@ -9,17 +8,13 @@ export interface EmployeeParams extends Omit<EmployeeAttributes, 'employeeId' | 
 export interface EmployeeRepository {
   create: (params: EmployeeParams) => Promise<EmployeeAttributes>;
   getList: () => Promise<EmployeeAttributes[]>;
+  getByEmail: (email: string) => Promise<EmployeeAttributes | null>;
 }
 
 export default (logger: Logger): EmployeeRepository => {
   const create = async (params: EmployeeParams) => {
     logger.info('Register a new employee to database');
-    const employee = await Employee.create({
-      ...params,
-      employeeId: 'a6fbe83a-1f69-4d7a-b894-328ec62fd97a',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    });
+    const employee = await Employee.create({ ...params });
 
     return employee;
   };
@@ -30,8 +25,16 @@ export default (logger: Logger): EmployeeRepository => {
     return employees;
   };
 
+  const getByEmail = async (email: string) => {
+    logger.info('Find registered employee by email');
+    return Employee.findOne({ 
+      where: { email }, 
+    });
+  };
+
   return {
     create,
     getList,
+    getByEmail,
   };
 };

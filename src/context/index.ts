@@ -1,11 +1,21 @@
-import type { Logger } from 'pino';
-import { PrismaClient } from '@prisma/client';
+import { Request } from 'express';
 import createRepositories, { Repositories } from '../repositories';
 
-export interface Context extends Repositories {}
+export interface Context {
+  request: Request;
+  repositories: Repositories;
+}
 
-const prisma = new PrismaClient();
+const context = (req: Request): Context => {
+  const { logger } = req.app.locals;
 
-const context = (logger: Logger): Context => createRepositories(logger, prisma);
+  return {
+    request: req,
+    repositories: {
+      ...createRepositories(logger),
+    },
+  };
+};
 
 export default context;
+

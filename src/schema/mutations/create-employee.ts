@@ -3,7 +3,7 @@ import { Context } from '../../context';
 import employeeType from '../types/employee';
 import newEmployee from '../types/inputs/new-employee';
 
-interface CreateEmployeeQueryArgs {
+interface CreateEmployeeParams {
   input: EmployeeAttributes;
 }
 
@@ -14,6 +14,6 @@ export default {
       type: GraphQLNonNull(newEmployee),
     },
   },
-  resolve: async (_: any, { input }: CreateEmployeeQueryArgs, context: Context) => 
+  resolve: async (_: any, { input }: CreateEmployeeParams, context: Context) => 
     context.repositories.employee.create(input),
 };

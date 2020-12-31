@@ -2,6 +2,7 @@ import { Model, Optional, DataTypes } from 'sequelize';
 import db from './instance';
 
 interface ReservationCreationAttributes extends Optional<ReservationAttributes, 'reservationId'> {}
+
 interface ReservationInstance
   extends Model<ReservationAttributes, ReservationCreationAttributes>,
   ReservationAttributes {}

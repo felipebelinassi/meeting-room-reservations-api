@@ -27,9 +27,6 @@ export default {
   resolve: async (_: any, { reservationId }: CancelReservationQueryArgs, context: Context) => {
     const { employeeId } = authenticationMiddleware(context.request);
 
-    return context.repositories.reservation.cancel(
-      reservationId,
-      employeeId,
-    );
+    return context.repositories.reservation.cancel(reservationId, employeeId);
   },
 };

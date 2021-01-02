@@ -1,42 +1,35 @@
-import { GraphQLList, GraphQLString } from 'graphql';
+import { GraphQLList, GraphQLNonNull, GraphQLString } from 'graphql';
 import { Context } from '../../context';
 import Room from '../types/room';
-import { formatDateTime, normalizeTimePeriod } from '../../utils/date-formatters';
+import { normalizePeriods } from '../../utils/date-formatters';
 
 interface RoomsQueryArgs {
-  date: string;
-  startHour: string;
-  endHour: string;
+  from: string;
+  to: string;
 }
 
 export default {
   type: new GraphQLList(Room),
   args: {
-    date: {
-      description: 'Meeting date in YYYY-MM-DD format',
-      type: GraphQLString,
+    from: {
+      description: 'Initial timestamp to search for room availability',
+      type: new GraphQLNonNull(GraphQLString),
     },
-    startHour: {
-      description: 'Desired meeting start hour in HH:MM format',
-      type: GraphQLString,
-    },
-    endHour: {
-      description: 'Desired meeting ending hour in HH:MM format',
-      type: GraphQLString,
+    to: {
+      description: 'Ending timestamp to search for room availability',
+      type: new GraphQLNonNull(GraphQLString),
     },
   },
   resolve: async (_: any, args: RoomsQueryArgs, context: Context) => {
-    const { date } = args;
-    const startHour = normalizeTimePeriod(args.startHour);
-    const endHour = normalizeTimePeriod(args.endHour);
+    const { from, to } = normalizePeriods({
+      from: args.from,
+      to: args.to,
+    });
 
-    const startTime = formatDateTime(date, startHour);
-    const endTime = formatDateTime(date, endHour);
-
-    if (startTime >= endTime) {
+    if (from.time >= to.time) {
       throw new Error('The meeting ending time needs to be greater than the starting time');
     }
 
-    return context.repositories.room.getAvailable(startHour, endHour, startTime, endTime);
+    return context.repositories.room.getAvailable(from.time, to.time, from.timestamp, to.timestamp);
   },
 };

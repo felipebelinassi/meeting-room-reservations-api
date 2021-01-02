@@ -13,6 +13,7 @@ interface CreateReservationParams {
 
 export interface ReservationRepository {
   create: (params: CreateReservationParams) => Promise<[ReservationAttributes, boolean]>;
+  cancel: (reservationId: string, employeeId: string) => Promise<void | null>;
 }
 
 export default (logger: Logger): ReservationRepository => {
@@ -59,7 +60,20 @@ export default (logger: Logger): ReservationRepository => {
     return reservation;
   };
 
+  const cancel = async (reservationId: string, employeeId: string) => {
+    logger.info('Cancel reservation');
+    const reservation = await Reservation.findOne({
+      where: {
+        reservedBy: employeeId,
+        reservationId,
+      },
+    });
+  
+    return reservation?.destroy();
+  };
+
   return {
     create,
+    cancel,
   };
 };

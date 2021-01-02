@@ -1,7 +1,7 @@
 import { GraphQLList, GraphQLNonNull, GraphQLString } from 'graphql';
 import { Context } from '../../context';
 import Room from '../types/room';
-import { normalizePeriods } from '../../utils/date-formatters';
+import { validateDateRange, normalizeTimePeriods } from '../../utils/date-time';
 
 interface RoomsQueryArgs {
   from: string;
@@ -21,15 +21,22 @@ export default {
     },
   },
   resolve: async (_: any, args: RoomsQueryArgs, context: Context) => {
-    const { from, to } = normalizePeriods({
-      from: args.from,
-      to: args.to,
+    const { from, to } = args;
+
+    if (!validateDateRange(from, to)) {
+      throw new Error('Time range is not valid');
+    }
+  
+    const { startDate, endDate } = normalizeTimePeriods({
+      startDate: from,
+      endDate: to,
     });
 
-    if (from.time >= to.time) {
-      throw new Error('The meeting ending time needs to be greater than the starting time');
-    }
-
-    return context.repositories.room.getAvailable(from.time, to.time, from.timestamp, to.timestamp);
+    return context.repositories.room.getAvailable({
+      from: startDate.timestamp,
+      startHour: startDate.time,
+      to: endDate.timestamp,
+      endHour: endDate.time,
+    });
   },
 };

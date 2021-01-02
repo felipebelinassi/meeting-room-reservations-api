@@ -14,7 +14,7 @@ const reservation = new GraphQLObjectType({
     },
     reservedBy: {
       type: new GraphQLNonNull(GraphQLID),
-      description: 'Employee id who made the reservation',
+      description: 'User who made the reservation',
     },
     startAt: {
       type: new GraphQLNonNull(GraphQLString),

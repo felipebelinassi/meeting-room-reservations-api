@@ -2,7 +2,7 @@ import { GraphQLNonNull, GraphQLString, GraphQLObjectType } from 'graphql';
 import { Context } from '../../context';
 import authenticationMiddleware from '../../middlewares/authentication';
 
-interface CancelReservationQueryArgs {
+interface CancelReservationParams {
   reservationId: string;
 }
 
@@ -24,9 +24,9 @@ export default {
       type: new GraphQLNonNull(GraphQLString),
     },
   },
-  resolve: async (_: any, { reservationId }: CancelReservationQueryArgs, context: Context) => {
-    const { employeeId } = authenticationMiddleware(context.request);
+  resolve: async (_: any, { reservationId }: CancelReservationParams, context: Context) => {
+    const { userId } = authenticationMiddleware(context.request);
 
-    return context.repositories.reservation.cancel(reservationId, employeeId);
+    return context.repositories.reservation.cancel(reservationId, userId);
   },
 };

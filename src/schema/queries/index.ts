@@ -1,11 +1,11 @@
 import { GraphQLObjectType } from 'graphql';
-import employees from './employees';
+import users from './users';
 import rooms from './rooms';
 
 const query = new GraphQLObjectType({
   name: 'Query',
   fields: (): any => ({
-    employees,
+    users,
     rooms,
   }),
 });

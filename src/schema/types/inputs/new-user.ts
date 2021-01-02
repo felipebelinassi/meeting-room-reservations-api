@@ -1,7 +1,7 @@
 import { GraphQLInputObjectType, GraphQLNonNull, GraphQLString } from 'graphql';
 
 export default new GraphQLInputObjectType({
-  name: 'NewEmployee',
+  name: 'NewUser',
   fields: {
     firstName: {
       type: new GraphQLNonNull(GraphQLString),
@@ -11,9 +11,6 @@ export default new GraphQLInputObjectType({
     },
     username: {
       type: new GraphQLNonNull(GraphQLString), 
-    },
-    position: {
-      type: new GraphQLNonNull(GraphQLString),
     },
     email: {
       type: new GraphQLNonNull(GraphQLString),

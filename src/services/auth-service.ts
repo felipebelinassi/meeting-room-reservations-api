@@ -10,7 +10,7 @@ interface AuthService {
   hashPassword: (password: string, salt?: number) => Promise<string>;
   comparePasswords: (password: string, hashPassword: string) => Promise<boolean>;
   generateToken: (payload: Record<string, unknown>) => string;
-  decodeToken: (token: string) => EmployeeAttributes;
+  decodeToken: (token: string) => UserAttributes;
 }
 
 const authService = (config: AuthConfig): AuthService => {
@@ -24,7 +24,7 @@ const authService = (config: AuthConfig): AuthService => {
     jwt.sign(payload, config.secret, { expiresIn: config.expiresIn });
 
   const decodeToken = (token: string) => 
-    jwt.verify(token, config.secret) as EmployeeAttributes;
+    jwt.verify(token, config.secret) as UserAttributes;
 
   return {
     hashPassword,

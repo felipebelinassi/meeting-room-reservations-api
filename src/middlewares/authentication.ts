@@ -3,7 +3,7 @@ import services from '../services';
 
 const { authService } = services;
 
-const authMiddleware = (req: Request): EmployeeAttributes => {
+const authMiddleware = (req: Request): UserAttributes => {
   const token = req.headers['x-access-token'];
   try {
     const decoded = authService.decodeToken(token as string);

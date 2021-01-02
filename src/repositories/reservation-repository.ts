@@ -6,14 +6,14 @@ const { Reservation } = models;
 
 interface CreateReservationParams {
   roomId: string;
-  employeeId: string;
+  userId: string;
   startTime: string;
   endTime: string;
 }
 
 export interface ReservationRepository {
   create: (params: CreateReservationParams) => Promise<[ReservationAttributes, boolean]>;
-  cancel: (reservationId: string, employeeId: string) => Promise<void | null>;
+  cancel: (reservationId: string, userId: string) => Promise<void | null>;
 }
 
 export default (logger: Logger): ReservationRepository => {
@@ -56,7 +56,7 @@ export default (logger: Logger): ReservationRepository => {
             roomId: params.roomId,
           },
           {
-            reservedBy: params.employeeId,
+            reservedBy: params.userId,
           },
         ],
         [Op.and]: {
@@ -70,7 +70,7 @@ export default (logger: Logger): ReservationRepository => {
       },
       defaults: {
         roomId: params.roomId,
-        reservedBy: params.employeeId,
+        reservedBy: params.userId,
         startAt: startTime,
         endAt: endTime,
       },

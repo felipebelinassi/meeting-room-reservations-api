@@ -1,17 +1,17 @@
 import type { Logger } from 'pino';
-import employeeRepository, { EmployeeRepository } from './employee-repository';
+import userRepository, { UserRepository } from './user-repository';
 import roomRepository, { RoomRepository } from './room-repository';
 import reservationRepository, { ReservationRepository } from './reservation-repository';
 
 export interface Repositories {
-  employee: EmployeeRepository;
+  user: UserRepository;
   room: RoomRepository;
   reservation: ReservationRepository;
 }
 
 export default function createRepositories(logger: Logger): Repositories {
   return {
-    employee: employeeRepository(logger),
+    user: userRepository(logger),
     room: roomRepository(logger),
     reservation: reservationRepository(logger),
   };

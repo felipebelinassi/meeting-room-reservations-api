@@ -1,9 +1,8 @@
-interface EmployeeAttributes {
-  employeeId: string;
+interface UserAttributes {
+  userId: string;
   firstName: string;
   lastName: string;
   username: string;
-  position: string;
   email: string;
   password: string;
   createdAt?: string;

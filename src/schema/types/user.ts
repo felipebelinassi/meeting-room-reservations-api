@@ -1,39 +1,35 @@
 import { GraphQLObjectType, GraphQLNonNull, GraphQLID, GraphQLString } from 'graphql';
 
-const employee = new GraphQLObjectType({
-  name: 'Employee',
-  description: 'Employee type definition',
+const user = new GraphQLObjectType({
+  name: 'User',
+  description: 'User type definition',
   fields: () => ({
-    employeeId: {
+    userId: {
       type: new GraphQLNonNull(GraphQLID),
-      description: 'Database ID of an employee',
+      description: 'Database ID of an user',
     },
     firstName: {
       type: new GraphQLNonNull(GraphQLString),
-      description: 'Employee first name',
+      description: 'User first name',
     },
     lastName: {
       type: new GraphQLNonNull(GraphQLString),
-      description: 'Employee last name',
+      description: 'User last name',
     },
     username: {
       type: new GraphQLNonNull(GraphQLString),
-      description: 'Employee username',
-    },
-    position: {
-      type: GraphQLString,
-      description: 'Employee position',
+      description: 'User custom username',
     },
     email: {
       type: new GraphQLNonNull(GraphQLString),
-      description: 'Employee business email',
+      description: 'User email',
     },
     password: {
       type: new GraphQLNonNull(GraphQLString),
-      description: 'Employee password',
+      description: 'User password',
       resolve: () => '******',
     },
   }),
 });
 
-export default employee;
+export default user;

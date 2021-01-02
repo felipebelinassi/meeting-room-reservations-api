@@ -1,10 +1,10 @@
-import Employee from './employee';
+import User from './user';
 import Room from './room';
 import Reservation from './reservation';
 
 const models = {
   Room,
-  Employee,
+  User,
   Reservation,
 };
 

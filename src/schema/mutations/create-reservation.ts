@@ -5,7 +5,7 @@ import newReservation from '../types/inputs/new-reservation';
 import authenticationMiddleware from '../../middlewares/authentication';
 import { normalizePeriods } from '../../utils/date-formatters';
 
-interface CreateReservationQueryArgs {
+interface CreateReservationParams {
   input: {
     roomId: string;
     start: string;
@@ -20,9 +20,9 @@ export default {
       type: GraphQLNonNull(newReservation),
     },
   },
-  resolve: async (_: any, { input }: CreateReservationQueryArgs, context: Context) => {
+  resolve: async (_: any, { input }: CreateReservationParams, context: Context) => {
     const { roomId } = input;
-    const { employeeId } = authenticationMiddleware(context.request);
+    const { userId } = authenticationMiddleware(context.request);
 
     const { start, end } = normalizePeriods({
       start: input.start,
@@ -31,7 +31,7 @@ export default {
 
     const [reservation, isAvailable] = await context.repositories.reservation.create({
       roomId,
-      employeeId,
+      userId,
       startTime: start.timestamp,
       endTime: end.timestamp,
     });

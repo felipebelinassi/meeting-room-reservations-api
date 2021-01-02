@@ -5,16 +5,16 @@ import Reservation from './reservation';
 
 const { authService } = services;
 
-interface EmployeeCreationAttributes extends Optional<EmployeeAttributes, 'employeeId' | 'createdAt' | 'updatedAt'> {}
+interface UserCreationAttributes extends Optional<UserAttributes, 'userId' | 'createdAt' | 'updatedAt'> {}
 
-interface EmployeeInstance 
-  extends Model<EmployeeAttributes, EmployeeCreationAttributes>, 
-  EmployeeAttributes {}
+interface UserInstance 
+  extends Model<UserAttributes, UserCreationAttributes>, 
+  UserAttributes {}
 
-const Employee = db.sequelize.define<EmployeeInstance>('Employee', {
-  employeeId: {
+const User = db.sequelize.define<UserInstance>('User', {
+  userId: {
     type: DataTypes.UUIDV4,
-    field: 'employee_id',
+    field: 'user_id',
     primaryKey: true,
     defaultValue: DataTypes.UUIDV4,
   },
@@ -29,9 +29,6 @@ const Employee = db.sequelize.define<EmployeeInstance>('Employee', {
   username: {
     type: DataTypes.STRING,
     unique: true,
-  },
-  position: {
-    type: DataTypes.STRING,
   },
   email: {
     type: DataTypes.STRING,
@@ -51,19 +48,19 @@ const Employee = db.sequelize.define<EmployeeInstance>('Employee', {
     defaultValue: DataTypes.NOW,
   },
 }, {
-  tableName: 'employee',
+  tableName: 'user',
   schema: 'meeting',
 });
 
-Employee.hasMany(Reservation, {
-  sourceKey: 'employeeId',
+User.hasMany(Reservation, {
+  sourceKey: 'userId',
   foreignKey: 'reservedBy',
 });
 
-Employee.addHook('beforeCreate', async (instance: EmployeeInstance) => {
+User.addHook('beforeCreate', async (instance: UserInstance) => {
   const { password } = instance;
   const hashedPassword = await authService.hashPassword(password);
   instance.setDataValue('password', hashedPassword);
 });
 
-export default Employee;
+export default User;

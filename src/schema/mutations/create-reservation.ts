@@ -24,7 +24,7 @@ export default {
   resolve: async (_: any, { input }: CreateReservationQueryArgs, context: Context) => {
     const { roomId, date, startHour, endHour } = input;
     const { employeeId } = authenticationMiddleware(context.request);
-  
+
     const startTime = formatDateTime(date, startHour);
     const endTime = formatDateTime(date, endHour);
 

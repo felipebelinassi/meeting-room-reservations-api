@@ -58,7 +58,6 @@ const Employee = db.sequelize.define<EmployeeInstance>('Employee', {
 Employee.hasMany(Reservation, {
   sourceKey: 'employeeId',
   foreignKey: 'reservedBy',
-  as: 'employeeReservations',
 });
 
 Employee.addHook('beforeCreate', async (instance: EmployeeInstance) => {

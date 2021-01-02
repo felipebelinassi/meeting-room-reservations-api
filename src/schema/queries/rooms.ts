@@ -37,10 +37,6 @@ export default {
       throw new Error('The meeting ending time needs to be greater than the starting time');
     }
 
-    const availableRooms = await context.repositories.room.getAvailable(startTime, endTime);
-
-    return availableRooms.filter(room => 
-      room.openAt <= startHour && room.closeAt >= endHour,
-    );
+    return context.repositories.room.getAvailable(startHour, endHour, startTime, endTime);
   },
 };

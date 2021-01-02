@@ -19,40 +19,60 @@ export interface ReservationRepository {
 export default (logger: Logger): ReservationRepository => {
   const create = async (params: CreateReservationParams) => {
     logger.info('Reservate a room for a given span of time');
+    const { startTime, endTime } = params;
+
+    const containsRequestedPeriod = {
+      startAt: { [Op.gt]: startTime },
+      endAt: { [Op.lt]: endTime },
+    };
+
+    const isContainedInRequestedPeriod = {
+      startAt: { [Op.lt]: startTime },
+      endAt: { [Op.gt]: endTime },
+    };
+
+    const startIsBetweenRequestedPeriod = {
+      startAt: { 
+        [Op.and]: {
+          [Op.gte]: startTime,
+          [Op.lt]: endTime, 
+        },
+      },
+    };
+
+    const endIsBetweenRequestedPeriod = {
+      endAt: { 
+        [Op.and]: {
+          [Op.gt]: startTime,
+          [Op.lte]: endTime, 
+        },
+      },
+    };
+  
     const reservation = await Reservation.findOrCreate({
       where: {
         [Op.or]: [
           {
-            startAt: { [Op.gt]: params.startTime },
-            endAt: { [Op.lt]: params.endTime },
+            roomId: params.roomId,
           },
           {
-            startAt: { [Op.lt]: params.startTime },
-            endAt: { [Op.gt]: params.endTime },
-          },
-          {
-            startAt: { 
-              [Op.and]: {
-                [Op.gte]: params.startTime,
-                [Op.lt]: params.endTime, 
-              },
-            },
-          },
-          {
-            endAt: { 
-              [Op.and]: {
-                [Op.gt]: params.startTime,
-                [Op.lte]: params.endTime, 
-              },
-            },
+            reservedBy: params.employeeId,
           },
         ],
+        [Op.and]: {
+          [Op.or]: [
+            containsRequestedPeriod,
+            isContainedInRequestedPeriod,
+            startIsBetweenRequestedPeriod,
+            endIsBetweenRequestedPeriod,
+          ],
+        },
       },
       defaults: {
         roomId: params.roomId,
         reservedBy: params.employeeId,
-        startAt: params.startTime,
-        endAt: params.endTime,
+        startAt: startTime,
+        endAt: endTime,
       },
       raw: true,
     });

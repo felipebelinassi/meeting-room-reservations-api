@@ -1,35 +1,67 @@
 import type { Logger } from 'pino';
-import sequelize from 'sequelize';
-import db from '../database/models/instance';
+import sequelize, { Op } from 'sequelize';
+import Reservation from '../database/models/reservation';
 import Room from '../database/models/room';
 
 export interface RoomRepository {
-  getAvailable: (startTime: string, endTime: string) => Promise<RoomAttributes[]>;
+  getAvailable: (startHour: string, endHour: string, startTime: string, endTime: string) => Promise<RoomAttributes[]>;
 }
 
 export default (logger: Logger): RoomRepository => {
-  const getAvailable = async (startTime: string, endTime: string) => {
+  const getAvailable = async (startHour: string, endHour: string, startTime: string, endTime: string) => {
     logger.info('Get list of available rooms at given period');
-    const availableRooms = await db.sequelize.query(`
-      SELECT * FROM meeting.room AS ro 
-      WHERE NOT EXISTS (
-        SELECT re.room_id, re.start_at, re.end_at   
-        FROM meeting.reservation AS re
-        WHERE ro.room_id = re.room_id
-        AND re.start_at >= :startTime
-        AND re.end_at <= :endTime
-      )`, 
-    { 
-      type: sequelize.QueryTypes.SELECT,
-      model: Room,
-      mapToModel: true,
-      raw: true,
-      replacements: {
-        startTime, endTime,
+    const containsRequestedPeriod = {
+      startAt: { [Op.gt]: startTime },
+      endAt: { [Op.lt]: endTime },
+    };
+
+    const isContainedInRequestedPeriod = {
+      startAt: { [Op.lt]: startTime },
+      endAt: { [Op.gt]: endTime },
+    };
+
+    const startIsBetweenRequestedPeriod = {
+      startAt: { 
+        [Op.and]: {
+          [Op.gte]: startTime,
+          [Op.lt]: endTime, 
+        },
       },
+    };
+
+    const endIsBetweenRequestedPeriod = {
+      endAt: { 
+        [Op.and]: {
+          [Op.gt]: startTime,
+          [Op.lte]: endTime, 
+        },
+      },
+    };
+  
+    const availableRooms = await Room.findAll({
+      where: {
+        openAt: { [Op.lte]: startHour },
+        closeAt: { [Op.gte]: endHour },
+        [Op.and]: sequelize.literal('"roomReservations" IS NULL'),
+      },
+      include: [
+        {
+          model: Reservation,
+          required: false,
+          as: 'roomReservations',
+          where: {
+            [Op.or]: [
+              containsRequestedPeriod,
+              isContainedInRequestedPeriod,
+              startIsBetweenRequestedPeriod,
+              endIsBetweenRequestedPeriod,
+            ],
+          },
+        },
+      ],
     });
 
-    logger.info(`Found ${availableRooms.length} rooms without reservations at desired period`);
+    logger.info(`Found ${availableRooms.length} rooms available for the desired period`);
 
     return availableRooms;
   };

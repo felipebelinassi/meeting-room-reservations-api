@@ -1,6 +1,7 @@
 import type { Logger } from 'pino';
 import { Op } from 'sequelize';
 import models from '../database/models';
+import checkRoomAvailability from './helpers/reservation-availability-conditions';
 
 const { Reservation } = models;
 
@@ -18,61 +19,22 @@ export interface ReservationRepository {
 
 export default (logger: Logger): ReservationRepository => {
   const create = async (params: CreateReservationParams) => {
-    logger.info('Reservate a room for a given span of time');
-    const { startTime, endTime } = params;
-
-    const containsRequestedPeriod = {
-      startAt: { [Op.gt]: startTime },
-      endAt: { [Op.lt]: endTime },
-    };
-
-    const isContainedInRequestedPeriod = {
-      startAt: { [Op.lt]: startTime },
-      endAt: { [Op.gt]: endTime },
-    };
-
-    const startIsBetweenRequestedPeriod = {
-      startAt: { 
-        [Op.and]: {
-          [Op.gte]: startTime,
-          [Op.lt]: endTime, 
-        },
-      },
-    };
-
-    const endIsBetweenRequestedPeriod = {
-      endAt: { 
-        [Op.and]: {
-          [Op.gt]: startTime,
-          [Op.lte]: endTime, 
-        },
-      },
-    };
-  
+    logger.info('Create a reservation for a room on a given timespan');
     const reservation = await Reservation.findOrCreate({
       where: {
         [Op.or]: [
-          {
-            roomId: params.roomId,
-          },
-          {
-            reservedBy: params.userId,
-          },
+          { roomId: params.roomId },
+          { reservedBy: params.userId },
         ],
-        [Op.and]: {
-          [Op.or]: [
-            containsRequestedPeriod,
-            isContainedInRequestedPeriod,
-            startIsBetweenRequestedPeriod,
-            endIsBetweenRequestedPeriod,
-          ],
+        [Op.and]: { 
+          ...checkRoomAvailability(params.startTime, params.endTime),
         },
       },
       defaults: {
         roomId: params.roomId,
         reservedBy: params.userId,
-        startAt: startTime,
-        endAt: endTime,
+        startAt: params.startTime,
+        endAt: params.endTime,
       },
       raw: true,
     });
@@ -80,11 +42,11 @@ export default (logger: Logger): ReservationRepository => {
     return reservation;
   };
 
-  const cancel = async (reservationId: string, employeeId: string) => {
+  const cancel = async (reservationId: string, userId: string) => {
     logger.info('Cancel reservation');
     const reservation = await Reservation.findOne({
       where: {
-        reservedBy: employeeId,
+        reservedBy: userId,
         reservationId,
       },
     });

@@ -3,14 +3,13 @@ import { Context } from '../../context';
 import reservationType from '../types/reservation';
 import newReservation from '../types/inputs/new-reservation';
 import authenticationMiddleware from '../../middlewares/authentication';
-import { formatDateTime } from '../../utils/date-formatters';
+import { normalizePeriods } from '../../utils/date-formatters';
 
 interface CreateReservationQueryArgs {
   input: {
     roomId: string;
-    date: string;
-    startHour: string;
-    endHour: string;
+    start: string;
+    end: string;
   }
 }
 
@@ -22,19 +21,23 @@ export default {
     },
   },
   resolve: async (_: any, { input }: CreateReservationQueryArgs, context: Context) => {
-    const { roomId, date, startHour, endHour } = input;
+    const { roomId } = input;
     const { employeeId } = authenticationMiddleware(context.request);
-  
-    const startTime = formatDateTime(date, startHour);
-    const endTime = formatDateTime(date, endHour);
+
+    const { start, end } = normalizePeriods({
+      start: input.start,
+      end: input.end,
+    });
 
     const [reservation, isAvailable] = await context.repositories.reservation.create({
       roomId,
       employeeId,
-      startTime,
-      endTime,
+      startTime: start.timestamp,
+      endTime: end.timestamp,
     });
+
     if (!isAvailable) throw new Error('Error creating reservation');
+
     return reservation;
   },
 };

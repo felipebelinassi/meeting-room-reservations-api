@@ -1,11 +1,19 @@
 import moment from 'moment';
 
-export const formatDateTime = (
-  date: string,
-  time: string,
-) => moment(date).add(time, 'hour').format();
+interface DateTime {
+  timestamp: string;
+  time: string;
+}
 
-export const normalizeTimePeriod = (
-  period: string,
-  pattern = 'HH:mm:ss',
-) => moment(period, pattern).format(pattern);
+export const formatDateTime = (date: string) => ({
+  timestamp: moment(date).format(),
+  time: moment(date).format('HH:mm:ss'),
+});
+
+export const normalizePeriods = (params: Record<string, string>) => {
+  const response = {} as Record<string, DateTime>;
+  Object.keys(params).forEach(key => {
+    response[key] = formatDateTime(params[key]);
+  });
+  return response;
+};

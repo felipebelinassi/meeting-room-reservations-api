@@ -6,13 +6,10 @@ export default new GraphQLInputObjectType({
     roomId: {
       type: new GraphQLNonNull(GraphQLID),
     },
-    date: {
-      type: new GraphQLNonNull(GraphQLString),
-    },
-    startHour: {
+    start: {
       type: new GraphQLNonNull(GraphQLString), 
     },
-    endHour: {
+    end: {
       type: new GraphQLNonNull(GraphQLString),
     },
   },

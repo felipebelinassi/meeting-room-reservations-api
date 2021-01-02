@@ -3,7 +3,7 @@ import { Context } from '../../context';
 import reservationType from '../types/reservation';
 import newReservation from '../types/inputs/new-reservation';
 import authenticationMiddleware from '../../middlewares/authentication';
-import { normalizePeriods } from '../../utils/date-formatters';
+import { validateDateRange, normalizeTimePeriods } from '../../utils/date-time';
 
 interface CreateReservationParams {
   input: {
@@ -21,19 +21,22 @@ export default {
     },
   },
   resolve: async (_: any, { input }: CreateReservationParams, context: Context) => {
-    const { roomId } = input;
+    const { roomId, start, end } = input;
+
+    if (!validateDateRange(start, end)) throw new Error('Time range is not valid');
+
     const { userId } = authenticationMiddleware(context.request);
 
-    const { start, end } = normalizePeriods({
-      start: input.start,
-      end: input.end,
+    const { startDate, endDate } = normalizeTimePeriods({
+      startDate: start,
+      endDate: end,
     });
 
     const [reservation, isAvailable] = await context.repositories.reservation.create({
       roomId,
       userId,
-      startTime: start.timestamp,
-      endTime: end.timestamp,
+      startTime: startDate.timestamp,
+      endTime: endDate.timestamp,
     });
 
     if (!isAvailable) throw new Error('Error creating reservation');

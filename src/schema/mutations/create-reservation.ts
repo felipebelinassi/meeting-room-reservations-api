@@ -21,18 +21,25 @@ export default {
     },
   },
   resolve: async (_: any, { input }: CreateReservationParams, context: Context) => {
+    const { request, repositories } = context;
     const { roomId, start, end } = input;
 
     if (!validateDateRange(start, end)) throw new Error('Time range is not valid');
 
-    const { userId } = authenticationMiddleware(context.request);
+    const { userId } = authenticationMiddleware(request);
 
     const { startDate, endDate } = formatTimePeriods({
       startDate: start,
       endDate: end,
     });
 
-    const [reservation, isAvailable] = await context.repositories.reservation.create({
+    const isRoomOpen = await repositories.room.isRoomOpen(
+      roomId, startDate.time, endDate.time,
+    );
+
+    if (!isRoomOpen) throw new Error('Selected room is not open!');
+
+    const [reservation, isAvailable] = await repositories.reservation.create({
       roomId,
       userId,
       startTime: startDate.timestamp,
@@ -40,7 +47,6 @@ export default {
     });
 
     if (!isAvailable) throw new Error('Error creating reservation');
-
     return reservation;
   },
 };

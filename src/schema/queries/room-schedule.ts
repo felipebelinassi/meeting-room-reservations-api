@@ -1,15 +1,15 @@
 import { GraphQLNonNull, GraphQLString } from 'graphql';
 import { Context } from '../../context';
-import Room from '../types/room';
+import Schedule from '../types/schedule';
 import { formatDate } from '../../utils/date-time';
 
-interface RoomsQueryArgs {
+interface RoomScheduleQueryArgs {
   roomId: string;
   date?: string;
 }
 
 export default {
-  type: Room,
+  type: Schedule,
   args: {
     roomId: {
       description: 'Room database ID',
@@ -20,19 +20,10 @@ export default {
       type: GraphQLString,
     },
   },
-  resolve: async (_: any, args: RoomsQueryArgs, context: Context) => {
+  resolve: async (_: any, args: RoomScheduleQueryArgs, context: Context) => {
     const { roomId } = args;
     const date = formatDate(args.date);
-
-    const roomData = await context.repositories.room.getSchedule(roomId, date);
-
-    if (!roomData) throw new Error('Error searching room schedule');
-
-    const { roomReservations, ...room } = roomData.get({ plain: true });
-    return {
-      ...room,
-      date,
-      schedule: roomReservations,
-    };
+    const schedule = await context.repositories.reservation.getReservations({ roomId, date });
+    return { date, schedule };
   },
 };

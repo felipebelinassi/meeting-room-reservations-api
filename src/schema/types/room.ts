@@ -1,5 +1,4 @@
-import { GraphQLObjectType, GraphQLNonNull, GraphQLID, GraphQLString, GraphQLList } from 'graphql';
-import Reservation from './reservation';
+import { GraphQLObjectType, GraphQLNonNull, GraphQLID, GraphQLString } from 'graphql';
 
 const room = new GraphQLObjectType({
   name: 'Room',
@@ -20,14 +19,6 @@ const room = new GraphQLObjectType({
     closeAt: {
       type: new GraphQLNonNull(GraphQLString),
       description: 'Room closing hour',
-    },
-    date: {
-      type: GraphQLString,
-      description: 'Room reservation schedule date',
-    },
-    schedule: {
-      type: GraphQLList(Reservation),
-      description: 'Room reservation schedule',
     },
   }),
 });

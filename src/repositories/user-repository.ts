@@ -7,7 +7,6 @@ export interface UserParams extends Omit<UserAttributes, 'employeeId' | 'created
 
 export interface UserRepository {
   create: (params: UserParams) => Promise<UserAttributes>;
-  getUsers: () => Promise<UserAttributes[]>;
   getByEmail: (email: string) => Promise<UserAttributes | null>;
 }
 
@@ -15,11 +14,6 @@ export default (logger: Logger): UserRepository => {
   const create = async (params: UserParams) => {
     logger.info('Register a new user to database');
     return User.create({ ...params });
-  };
-
-  const getUsers = async () => {
-    logger.info('Get list of registered users');
-    return User.findAll();
   };
 
   const getByEmail = async (email: string) => {
@@ -32,7 +26,6 @@ export default (logger: Logger): UserRepository => {
 
   return {
     create,
-    getUsers,
     getByEmail,
   };
 };

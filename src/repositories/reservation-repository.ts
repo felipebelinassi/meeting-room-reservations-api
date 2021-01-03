@@ -1,10 +1,11 @@
 import type { Logger } from 'pino';
-import { Op } from 'sequelize';
+import sequelize, { Op } from 'sequelize';
 import models from '../database/models';
 import { ReservationInstance } from '../database/models/reservation';
 import checkRoomAvailability from './helpers/reservation-availability-conditions';
+import { validateDateRange } from '../utils/date-time';
 
-const { Reservation } = models;
+const { Reservation, User, Room } = models;
 
 interface CreateReservationParams {
   roomId: string;
@@ -13,9 +14,16 @@ interface CreateReservationParams {
   endTime: string;
 }
 
+interface GetReservationsParams {
+  userId?: string;
+  roomId?: string;
+  date: string;
+}
+
 export interface ReservationRepository {
   create: (params: CreateReservationParams) => Promise<[ReservationInstance, boolean]>;
   cancel: (reservationId: string, userId: string) => Promise<void | null>;
+  getReservations: (params: GetReservationsParams) => Promise<ReservationInstance[]>;
 }
 
 export default (logger: Logger): ReservationRepository => {
@@ -51,12 +59,52 @@ export default (logger: Logger): ReservationRepository => {
         reservationId,
       },
     });
+
+    if (reservation && !validateDateRange(reservation.startAt, new Date().toString())) {
+      throw new Error('Cannot cancel a current reservation');
+    }
   
     return reservation?.destroy();
   };
 
+  const getReservations = async (params: GetReservationsParams) => {
+    logger.info('Get list of reservations by date, userId or roomId');
+    const { userId, roomId, date } = params;
+
+    const whereParams = {} as Record<string, string>;
+    // Dynamically set where criteria
+    if (userId) whereParams.reservedBy = userId;
+    else if (roomId) whereParams.roomId = roomId;
+
+    const reservations = await Reservation.findAll({
+      where: {
+        ...whereParams,
+        [Op.and]: [
+          sequelize.where(sequelize.fn('date', sequelize.col('start_at')), '=', date),
+          sequelize.where(sequelize.fn('date', sequelize.col('end_at')), '=', date),
+        ],
+      },
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['firstName'],
+        },
+        { 
+          model: Room,
+          as: 'room',
+          attributes: ['description'],
+        },
+      ],
+      order: [['startAt', 'asc']],
+    });
+    return reservations;
+  };
+  
+
   return {
     create,
     cancel,
+    getReservations,
   };
 };

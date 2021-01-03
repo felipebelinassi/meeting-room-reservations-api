@@ -12,9 +12,19 @@ const reservation = new GraphQLObjectType({
       type: new GraphQLNonNull(GraphQLID),
       description: 'Id of the reserved room',
     },
+    roomDescription: {
+      type: GraphQLString,
+      description: 'Description of the reserved room',
+      resolve: (res) => res.room.description,
+    },
     reservedBy: {
       type: new GraphQLNonNull(GraphQLID),
       description: 'User who made the reservation',
+    },
+    reservedByName: {
+      type: GraphQLString,
+      description: 'Name of the user who made the reservation',
+      resolve: (res) => res.user.firstName,
     },
     startAt: {
       type: new GraphQLNonNull(GraphQLString),

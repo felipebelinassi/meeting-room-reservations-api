@@ -4,7 +4,9 @@ import Reservation from './reservation';
 
 interface RoomCreationAttributes extends Optional<RoomAttributes, 'roomId'> {}
 
-interface RoomInstance extends Model<RoomAttributes, RoomCreationAttributes>, RoomAttributes {}
+export interface RoomInstance
+  extends Model<RoomAttributes, RoomCreationAttributes>,
+  RoomAttributes {}
 
 const Room = db.sequelize.define<RoomInstance>('Room', {
   roomId: {

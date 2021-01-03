@@ -1,9 +1,8 @@
-interface EmployeeAttributes {
-  employeeId: string;
+interface UserAttributes {
+  userId: string;
   firstName: string;
   lastName: string;
   username: string;
-  position: string;
   email: string;
   password: string;
   createdAt?: string;
@@ -15,6 +14,7 @@ interface RoomAttributes {
   description?: string;
   openAt: string;
   closeAt: string;
+  roomReservations?: ReservationAttributes[];
 }
 
 interface ReservationAttributes {

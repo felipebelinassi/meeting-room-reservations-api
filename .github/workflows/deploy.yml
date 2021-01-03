@@ -3,11 +3,35 @@ name: Deploy Application
 on:
   push:
     branches:
+      - dev
       - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      NODE_ENV: ${{ secrets.NODE_ENV }}
+      PORT: ${{ secrets.PORT }}
+      LOGGER_ENABLED: ${{ secrets.LOGGER_ENABLED }}
+      LOGGER_LEVEL: ${{ secrets.LOGGER_LEVEL }}
+      DATABASE_URI: ${{ secrets.DATABASE_URI }}
+      DATABASE_DIALECT: ${{ secrets.DATABASE_DIALECT }}
+      TIMEZONE: ${{ secrets.TIMEZONE }}
+      JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+      TOKEN_EXPIRES_IN: ${{ secrets.TOKEN_EXPIRES_IN }}
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres@2020!
+          POSTGRES_DB: meeting-reservations
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - uses: actions/checkout@v2

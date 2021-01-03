@@ -5,7 +5,7 @@ import services from '../../services';
 
 const { authService } = services;
 
-interface CreateTokenArguments {
+interface CreateTokenParams {
   email: string;
   password: string;
 }
@@ -14,27 +14,27 @@ export default {
   type: tokenType,
   args: {
     email: {
-      description: 'Employee registered email',
+      description: 'User registered email',
       type: new GraphQLNonNull(GraphQLString),
       
     },
     password: {
-      description: 'Employee registered password',
+      description: 'User registered password',
       type: new GraphQLNonNull(GraphQLString),
     },
   },
-  resolve: async (_: any, { email, password }: CreateTokenArguments, context: Context) => {
-    const employee = await context.repositories.employee.getByEmail(email);
+  resolve: async (_: any, { email, password }: CreateTokenParams, context: Context) => {
+    const user = await context.repositories.user.getByEmail(email);
     
-    if (!employee) {
+    if (!user) {
       throw new Error('The email was not found in the database');
     }
 
-    if (!(await authService.comparePasswords(password, employee.password))) {
-      throw new Error('Employee authentication failed');
+    if (!(await authService.comparePasswords(password, user.password))) {
+      throw new Error('User authentication failed');
     }
 
-    const token = authService.generateToken({ ...employee });
+    const token = authService.generateToken({ ...user });
     return { token, email };
   },
 };

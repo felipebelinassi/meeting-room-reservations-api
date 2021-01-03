@@ -1,12 +1,16 @@
 import { GraphQLObjectType } from 'graphql';
-import createEmployee from './create-employee';
-import authenticateEmployee from './authenticate-employee';
+import createUser from './create-user';
+import login from './login';
+import createReservation from './create-reservation';
+import cancelReservation from './cancel-reservation';
 
 const mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: (): any => ({
-    createEmployee,
-    authenticateEmployee,
+    login,
+    createUser,
+    createReservation,
+    cancelReservation,
   }),
 });
 

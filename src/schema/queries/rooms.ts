@@ -1,46 +1,46 @@
 import { GraphQLList, GraphQLString } from 'graphql';
 import { Context } from '../../context';
 import Room from '../types/room';
-import { formatDateTime, normalizeTimePeriod } from '../../utils/date-formatters';
+import { validateDateRange, formatTimePeriods } from '../../utils/date-time';
 
 interface RoomsQueryArgs {
-  date: string;
-  startHour: string;
-  endHour: string;
+  from: string;
+  to: string;
 }
 
 export default {
   type: new GraphQLList(Room),
   args: {
-    date: {
-      description: 'Meeting date in YYYY-MM-DD format',
+    from: {
+      description: 'Initial timestamp to search for room availability',
       type: GraphQLString,
     },
-    startHour: {
-      description: 'Desired meeting start hour in HH:MM format',
-      type: GraphQLString,
-    },
-    endHour: {
-      description: 'Desired meeting ending hour in HH:MM format',
+    to: {
+      description: 'Ending timestamp to search for room availability',
       type: GraphQLString,
     },
   },
   resolve: async (_: any, args: RoomsQueryArgs, context: Context) => {
-    const { date } = args;
-    const startHour = normalizeTimePeriod(args.startHour);
-    const endHour = normalizeTimePeriod(args.endHour);
+    const { from, to } = args;
 
-    const startTime = formatDateTime(date, startHour);
-    const endTime = formatDateTime(date, endHour);
-
-    if (startTime >= endTime) {
-      throw new Error('The meeting ending time needs to be greater than the starting time');
+    if (!from || !to) {
+      return context.repositories.room.getRooms();
     }
 
-    const availableRooms = await context.repositories.room.getAvailable(startTime, endTime);
+    if (!validateDateRange(from, to)) {
+      throw new Error('Time range is not valid');
+    }
+  
+    const { startDate, endDate } = formatTimePeriods({
+      startDate: from,
+      endDate: to,
+    });
 
-    return availableRooms.filter(room => 
-      room.openAt <= startHour && room.closeAt >= endHour,
-    );
+    return context.repositories.room.getAvailable({
+      from: startDate.timestamp,
+      startHour: startDate.time,
+      to: endDate.timestamp,
+      endHour: endDate.time,
+    });
   },
 };

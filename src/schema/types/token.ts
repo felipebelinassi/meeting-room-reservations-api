@@ -6,11 +6,11 @@ const token = new GraphQLObjectType({
   fields: () => ({
     email: {
       type: new GraphQLNonNull(GraphQLID),
-      description: 'Authenticated employee email',
+      description: 'Authenticated user email',
     },
     token: {
       type: new GraphQLNonNull(GraphQLString),
-      description: 'Employee authentication token',
+      description: 'User authentication token',
     },
   }),
 });

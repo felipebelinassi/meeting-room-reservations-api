@@ -5,8 +5,10 @@ interface DateTime {
   time: string;
 }
 
+export const formatDate = (date?: string) => moment(date).format('YYYY-MM-DD');
+
 export const formatDateTime = (date: string) => ({
-  timestamp: moment(date).format(),
+  timestamp: moment(date).format('YYYY-MM-DD HH:mm:ss'),
   time: moment(date).format('HH:mm:ss'),
 });
 
@@ -22,7 +24,8 @@ export const validateDateRange = (start: string, end: string) => {
   const { timestamp: startTimestamp } = formatDateTime(start);
   const { timestamp: endTimestamp } = formatDateTime(end);
 
-  const isValidStartDate = startTimestamp >= moment().format();
+  const currentDate = moment().format();
+  const isValidStartDate = startTimestamp >= currentDate;
   const isValidRange = endTimestamp > startTimestamp;
 
   return isValidStartDate && isValidRange;

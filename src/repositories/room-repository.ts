@@ -12,11 +12,17 @@ interface AvailableRoomParams {
   endHour: string;
 }
 export interface RoomRepository {
+  getRooms: () => Promise<RoomInstance[]>;
   getAvailable: (params: AvailableRoomParams) => Promise<RoomInstance[]>;
   getSchedule: (roomId: string, date: string) => Promise<RoomInstance | null>;
 }
 
 export default (logger: Logger): RoomRepository => {
+  const getRooms = async () => {
+    logger.info('Get list of registered rooms');
+    return Room.findAll();
+  };
+
   const getAvailable = async (params: AvailableRoomParams) => {
     logger.info('Search available rooms at given timespan');
     const availableRooms = await Room.findAll({
@@ -63,6 +69,7 @@ export default (logger: Logger): RoomRepository => {
   };
 
   return {
+    getRooms,
     getAvailable,
     getSchedule,
   };

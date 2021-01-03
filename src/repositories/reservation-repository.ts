@@ -1,6 +1,7 @@
 import type { Logger } from 'pino';
 import { Op } from 'sequelize';
 import models from '../database/models';
+import { ReservationInstance } from '../database/models/reservation';
 import checkRoomAvailability from './helpers/reservation-availability-conditions';
 
 const { Reservation } = models;
@@ -13,7 +14,7 @@ interface CreateReservationParams {
 }
 
 export interface ReservationRepository {
-  create: (params: CreateReservationParams) => Promise<[ReservationAttributes, boolean]>;
+  create: (params: CreateReservationParams) => Promise<[ReservationInstance, boolean]>;
   cancel: (reservationId: string, userId: string) => Promise<void | null>;
 }
 

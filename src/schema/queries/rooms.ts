@@ -1,7 +1,7 @@
-import { GraphQLList, GraphQLNonNull, GraphQLString } from 'graphql';
+import { GraphQLList, GraphQLString } from 'graphql';
 import { Context } from '../../context';
 import Room from '../types/room';
-import { validateDateRange, normalizeTimePeriods } from '../../utils/date-time';
+import { validateDateRange, formatTimePeriods } from '../../utils/date-time';
 
 interface RoomsQueryArgs {
   from: string;
@@ -13,21 +13,25 @@ export default {
   args: {
     from: {
       description: 'Initial timestamp to search for room availability',
-      type: new GraphQLNonNull(GraphQLString),
+      type: GraphQLString,
     },
     to: {
       description: 'Ending timestamp to search for room availability',
-      type: new GraphQLNonNull(GraphQLString),
+      type: GraphQLString,
     },
   },
   resolve: async (_: any, args: RoomsQueryArgs, context: Context) => {
     const { from, to } = args;
 
+    if (!from || !to) {
+      return context.repositories.room.getRooms();
+    }
+
     if (!validateDateRange(from, to)) {
       throw new Error('Time range is not valid');
     }
   
-    const { startDate, endDate } = normalizeTimePeriods({
+    const { startDate, endDate } = formatTimePeriods({
       startDate: from,
       endDate: to,
     });

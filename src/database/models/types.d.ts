@@ -14,6 +14,7 @@ interface RoomAttributes {
   description?: string;
   openAt: string;
   closeAt: string;
+  roomReservations?: ReservationAttributes[];
 }
 
 interface ReservationAttributes {

@@ -1,8 +1,10 @@
 import { Model, Optional, DataTypes } from 'sequelize';
 import db from './instance';
+import { formatDateTime } from '../../utils/date-time';
 
 interface ReservationCreationAttributes extends Optional<ReservationAttributes, 'reservationId'> {}
-interface ReservationInstance
+
+export interface ReservationInstance
   extends Model<ReservationAttributes, ReservationCreationAttributes>,
   ReservationAttributes {}
 
@@ -26,10 +28,16 @@ const Reservation = db.sequelize.define<ReservationInstance>('Reservation', {
   startAt: {
     type: DataTypes.DATE,
     field: 'start_at',
+    get() {
+      return formatDateTime(this.getDataValue('startAt')).time;
+    },
   },
   endAt: {
     type: DataTypes.DATE,
     field: 'end_at',
+    get() {
+      return formatDateTime(this.getDataValue('endAt')).time;
+    },
   },
 }, {
   createdAt: false,

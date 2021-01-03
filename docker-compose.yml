@@ -2,24 +2,44 @@ version: '3'
 
 services:
   postgres:
-    image: postgres
+    image: postgres:10.4
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres@2020!
+      POSTGRES_DB: meeting-reservations
     ports:
       - '5432:5432'
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     networks:
       - postgres-network
-      
-  pgadmin:
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: changeme@email.com
-      PGADMIN_DEFAULT_PASSWORD: pgadmin@2020!
-    ports:
-      - "16543:80"
+
+  meeting-api:
+    container_name: meeting-api
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
     depends_on:
+      postgres:
+        condition: service_healthy
+    links: 
       - postgres
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      LOGGER_ENABLED: 'true'
+      LOGGER_LEVEL: info
+      DATABASE_URI: postgres://postgres:postgres@2020!@postgres:5432/meeting-reservations
+      DATABASE_DIALECT: postgres
+      TIMEZONE: America/Sao_Paulo
+      JWT_SECRET_KEY: superdupersecret
+      TOKEN_EXPIRES_IN: 3600000
+    ports:
+      - "3000:3000"
     networks:
       - postgres-network
 

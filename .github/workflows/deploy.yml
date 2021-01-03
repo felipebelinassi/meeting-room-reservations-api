@@ -24,7 +24,6 @@ jobs:
           --health-retries 5
 
     steps:
-      - name: Check out repository code
       - uses: actions/checkout@v2
       - run: git fetch --prune --unshallow
 
@@ -37,7 +36,7 @@ jobs:
         run: npm ci
 
       - name: Run lint
-        run: npm run lint
+        run: yarn lint
 
       - name: Run all tests
-        run: npm run test
+        run: yarn test

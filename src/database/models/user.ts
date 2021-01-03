@@ -1,7 +1,6 @@
 import { Model, Optional, DataTypes } from 'sequelize';
 import db from './instance';
 import services from '../../services';
-import Reservation from './reservation';
 
 const { authService } = services;
 
@@ -50,11 +49,6 @@ const User = db.sequelize.define<UserInstance>('User', {
 }, {
   tableName: 'user',
   schema: 'meeting',
-});
-
-User.hasMany(Reservation, {
-  sourceKey: 'userId',
-  foreignKey: 'reservedBy',
 });
 
 User.addHook('beforeCreate', async (instance: UserInstance) => {

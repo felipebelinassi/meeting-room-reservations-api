@@ -1,6 +1,5 @@
 import { Model, Optional, DataTypes } from 'sequelize';
 import db from './instance';
-import Reservation from './reservation';
 
 interface RoomCreationAttributes extends Optional<RoomAttributes, 'roomId'> {}
 
@@ -31,12 +30,6 @@ const Room = db.sequelize.define<RoomInstance>('Room', {
   updatedAt: false,
   tableName: 'room',
   schema: 'meeting',
-});
-
-Room.hasMany(Reservation, {
-  sourceKey: 'roomId',
-  foreignKey: 'roomId',
-  as: 'roomReservations',
 });
 
 export default Room;

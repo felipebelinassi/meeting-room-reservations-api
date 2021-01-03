@@ -30,7 +30,7 @@ module.exports = {
       start_at: {
         type: Sequelize.DataTypes.DATE,
       },
-      close_at: {
+      end_at: {
         type: Sequelize.DataTypes.DATE,
       }
     }, {
@@ -39,7 +39,7 @@ module.exports = {
 
     await queryInterface.addConstraint('meeting.reservation', {
       type: 'unique',
-      fields: ['reservation_id', 'start_at', 'close_at'],
+      fields: ['reservation_id', 'start_at', 'end_at'],
       name: 'reservation_un',
     });
   },

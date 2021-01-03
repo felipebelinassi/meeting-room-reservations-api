@@ -8,14 +8,14 @@ describe('Date time utils unit tests', () => {
       expect(formattedDate).toMatch(/(\d{4})-(\d{2})-(\d{2})/);
     });
 
-    it('should format timestamp and time in the required formats', () => {
+    it('should return formatted timestamp and time for given period', () => {
       const date = moment().format();
       const formattedDateTime = dateTimeUtils.formatDateTime(date);
   
       expect(formattedDateTime).toEqual(
         expect.objectContaining({
-          timestamp: expect.stringMatching(/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/),
-          time: expect.stringMatching(/(\d{2}):(\d{2}):(\d{2})/),
+          timestamp: expect.any(String),
+          time: expect.any(String),
         }),
       );
     });

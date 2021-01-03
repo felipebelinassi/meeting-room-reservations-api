@@ -12,7 +12,7 @@ module.exports = {
         references: {
           model: {
             tableName: 'room',
-            schema: 'public'
+            schema: 'meeting'
           },
           key: 'room_id'
         },
@@ -37,7 +37,7 @@ module.exports = {
       schema: 'meeting',
     });
 
-    await queryInterface.addConstraint('reservation', {
+    await queryInterface.addConstraint('meeting.reservation', {
       type: 'unique',
       fields: ['reservation_id', 'start_at', 'close_at'],
       name: 'reservation_un',

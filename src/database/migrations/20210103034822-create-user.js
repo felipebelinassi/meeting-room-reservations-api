@@ -15,9 +15,11 @@ module.exports = {
       },
       username: {
         type: Sequelize.DataTypes.STRING,
+        unique: true,
       },
       email: {
         type: Sequelize.DataTypes.STRING,
+        unique: true,
       },
       password: {
         type: Sequelize.DataTypes.STRING,
@@ -32,17 +34,6 @@ module.exports = {
       },
     }, {
       schema: 'meeting',
-    });
-
-    await queryInterface.addConstraint('user', {
-      type: 'unique',
-      fields: ['email'],
-      name: 'user_un_email',
-    });
-    await queryInterface.addConstraint('user', {
-      type: 'unique',
-      fields: ['username'],
-      name: 'user_un_username',
     });
   },
   down: (queryInterface, Sequelize) => queryInterface.dropTable('user'),

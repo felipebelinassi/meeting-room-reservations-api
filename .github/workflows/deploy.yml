@@ -9,6 +9,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      NODE_ENV: ${{ secrets.NODE_ENV }}
+      PORT: ${{ secrets.PORT }}
+      LOGGER_ENABLED: ${{ secrets.LOGGER_ENABLED }}
+      LOGGER_LEVEL: ${{ secrets.LOGGER_LEVEL }}
+      DATABASE_URI: ${{ secrets.DATABASE_URI }}
+      DATABASE_DIALECT: ${{ secrets.DATABASE_DIALECT }}
+      TIMEZONE: ${{ secrets.TIMEZONE }}
+      JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+      TOKEN_EXPIRES_IN: ${{ secrets.TOKEN_EXPIRES_IN }}
 
     services:
       postgres:
@@ -31,18 +41,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-
-      - name: Sets environment variables
-        env:
-          NODE_ENV: ${{ secrets.NODE_ENV }}
-          PORT: ${{ secrets.PORT }}
-          LOGGER_ENABLED: ${{ secrets.LOGGER_ENABLED }}
-          LOGGER_LEVEL: ${{ secrets.LOGGER_LEVEL }}
-          DATABASE_URI: ${{ secrets.DATABASE_URI }}
-          DATABASE_DIALECT: ${{ secrets.DATABASE_DIALECT }}
-          TIMEZONE: ${{ secrets.TIMEZONE }}
-          JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
-          TOKEN_EXPIRES_IN: ${{ secrets.TOKEN_EXPIRES_IN }}
 
       - name: Install dependencies
         run: yarn --frozen-lockfile

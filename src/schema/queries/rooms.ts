@@ -1,7 +1,7 @@
 import { GraphQLList, GraphQLString } from 'graphql';
 import { Context } from '../../context';
 import Room from '../types/room';
-import { validateDateRange, normalizeTimePeriods } from '../../utils/date-time';
+import { validateDateRange, formatTimePeriods } from '../../utils/date-time';
 
 interface RoomsQueryArgs {
   from: string;
@@ -31,7 +31,7 @@ export default {
       throw new Error('Time range is not valid');
     }
   
-    const { startDate, endDate } = normalizeTimePeriods({
+    const { startDate, endDate } = formatTimePeriods({
       startDate: from,
       endDate: to,
     });

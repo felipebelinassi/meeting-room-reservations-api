@@ -3,7 +3,7 @@ import { Context } from '../../context';
 import reservationType from '../types/reservation';
 import newReservation from '../types/inputs/new-reservation';
 import authenticationMiddleware from '../../middlewares/authentication';
-import { validateDateRange, normalizeTimePeriods } from '../../utils/date-time';
+import { validateDateRange, formatTimePeriods } from '../../utils/date-time';
 
 interface CreateReservationParams {
   input: {
@@ -27,7 +27,7 @@ export default {
 
     const { userId } = authenticationMiddleware(context.request);
 
-    const { startDate, endDate } = normalizeTimePeriods({
+    const { startDate, endDate } = formatTimePeriods({
       startDate: start,
       endDate: end,
     });

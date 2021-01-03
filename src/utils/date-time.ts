@@ -8,11 +8,11 @@ interface DateTime {
 export const formatDate = (date?: string) => moment(date).format('YYYY-MM-DD');
 
 export const formatDateTime = (date: string) => ({
-  timestamp: moment(date).format('YYYY-MM-DD HH:mm:ss'),
+  timestamp: moment(date).format(),
   time: moment(date).format('HH:mm:ss'),
 });
 
-export const normalizeTimePeriods = (params: Record<string, string>) => {
+export const formatTimePeriods = (params: Record<string, string>) => {
   const response = {} as Record<string, DateTime>;
   Object.keys(params).forEach(key => {
     response[key] = formatDateTime(params[key]);

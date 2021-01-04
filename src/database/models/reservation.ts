@@ -1,7 +1,5 @@
-import { Model, Optional, DataTypes } from 'sequelize';
+import { Model, Optional, DataTypes, ModelCtor } from 'sequelize';
 import db from './instance';
-import User from './user';
-import Room from './room';
 import { formatDateTime } from '../../utils/date-time';
 
 interface ReservationCreationAttributes extends Optional<ReservationAttributes, 'reservationId'> {}
@@ -48,14 +46,17 @@ const Reservation = db.sequelize.define<ReservationInstance>('Reservation', {
   schema: 'meeting',
 });
 
-Reservation.belongsTo(User, {
-  foreignKey: 'reservedBy',
-  as: 'user',
-});
+Reservation.prototype.associate = (models: Record<string, ModelCtor<any>>) => {
+  Reservation.belongsTo(models.User, {
+    foreignKey: 'reservedBy',
+    as: 'user',
+  });
+  
+  Reservation.belongsTo(models.Room, {
+    foreignKey: 'roomId',
+    as: 'room',
+  });
+};
 
-Reservation.belongsTo(Room, {
-  foreignKey: 'roomId',
-  as: 'room',
-});
 
 export default Reservation;

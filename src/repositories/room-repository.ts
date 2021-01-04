@@ -14,7 +14,7 @@ interface AvailableRoomParams {
 export interface RoomRepository {
   getRooms: () => Promise<RoomInstance[]>;
   getAvailable: (params: AvailableRoomParams) => Promise<RoomInstance[]>;
-  getSchedule: (roomId: string, date: string) => Promise<RoomInstance | null>;
+  isRoomOpen: (roomId: string, startHour: string, endHour: string) => Promise<boolean>;
 }
 
 export default (logger: Logger): RoomRepository => {
@@ -44,33 +44,18 @@ export default (logger: Logger): RoomRepository => {
     return availableRooms;
   };
 
-  const getSchedule = async (roomId: string, date: string) => {
-    logger.info('Get room meeting schedule');
-    return Room.findOne({
-      where: { roomId },
-      include: [{
-        model: Reservation,
-        required: false,
-        as: 'roomReservations',
-        where: {
-          [Op.and]: [
-            sequelize.where(sequelize.fn('date', sequelize.col('start_at')), '=', date),
-            sequelize.where(sequelize.fn('date', sequelize.col('end_at')), '=', date),
-          ],
-        },
-      }],
-      order: [
-        [{
-          model: Reservation,
-          as: 'roomReservations',
-        }, 'startAt', 'asc'],
-      ],
+  const isRoomOpen = async (roomId: string, startHour: string, endHour: string) => 
+    !!await Room.findOne({
+      where: {
+        roomId,
+        openAt: { [Op.lte]: startHour },
+        closeAt: { [Op.gte]: endHour },
+      },
     });
-  };
 
   return {
     getRooms,
     getAvailable,
-    getSchedule,
+    isRoomOpen,
   };
 };

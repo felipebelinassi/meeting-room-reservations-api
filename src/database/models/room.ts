@@ -1,4 +1,4 @@
-import { Model, Optional, DataTypes } from 'sequelize';
+import { Model, Optional, DataTypes, ModelCtor } from 'sequelize';
 import db from './instance';
 
 interface RoomCreationAttributes extends Optional<RoomAttributes, 'roomId'> {}
@@ -32,4 +32,11 @@ const Room = db.sequelize.define<RoomInstance>('Room', {
   schema: 'meeting',
 });
 
+Room.prototype.associate = (models: Record<string, ModelCtor<any>>) => {
+  Room.hasMany(models.Reservation, {
+    sourceKey: 'roomId',
+    foreignKey: 'roomId',
+    as: 'roomReservations',
+  });
+};
 export default Room;

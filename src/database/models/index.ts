@@ -3,8 +3,7 @@ import roomFactory from './room';
 import reservationFactory from './reservation';
 import instance from './instance';
 
-
-const createModels = (db = instance.sequelize) => {
+export default function createModels(db = instance.sequelize) {
   const models = {
     User: userFactory(db),
     Room: roomFactory(db),
@@ -17,9 +16,7 @@ const createModels = (db = instance.sequelize) => {
   });
   
   return models;
-};
+}
 
 export type Models = ReturnType<typeof createModels>;
-
-export default createModels;
 

@@ -5,11 +5,11 @@ interface DateTime {
   time: string;
 }
 
+const formatTimestamp = (date?: string) => moment(date).format();
+
 export const formatDate = (date?: string) => moment(date).format('YYYY-MM-DD');
 
 export const formatTime = (date: string) => moment(date).format('HH:mm:ss');
-
-export const formatTimestamp = (date?: string) => moment(date).format();
 
 export const formatTimePeriods = (params: Record<string, string>) => {
   const response = {} as Record<string, DateTime>;

@@ -1,7 +1,7 @@
 import type { Logger } from 'pino';
 import type { Models } from '../database/models';
 
-export interface UserParams extends Omit<UserAttributes, 'employeeId' | 'createdAt' | 'updatedAt'> {}
+export interface UserParams extends Omit<UserAttributes, 'userId' | 'createdAt' | 'updatedAt'> {}
 
 export interface UserRepository {
   create: (params: UserParams) => Promise<UserAttributes>;

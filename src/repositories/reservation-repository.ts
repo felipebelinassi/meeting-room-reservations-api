@@ -1,11 +1,8 @@
 import type { Logger } from 'pino';
 import sequelize, { Op } from 'sequelize';
-import models from '../database/models';
+import type { Models } from '../database/models';
 import { ReservationInstance } from '../database/models/reservation';
 import checkRoomAvailability from './helpers/reservation-availability-conditions';
-import { validateDateRange } from '../utils/date-time';
-
-const { Reservation, User, Room } = models;
 
 interface CreateReservationParams {
   roomId: string;
@@ -22,14 +19,14 @@ interface GetReservationsParams {
 
 export interface ReservationRepository {
   create: (params: CreateReservationParams) => Promise<[ReservationInstance, boolean]>;
-  cancel: (reservationId: string, userId: string) => Promise<void | null>;
+  get: (reservationId: string, userId: string) => Promise<ReservationInstance | null>;
   getReservations: (params: GetReservationsParams) => Promise<ReservationInstance[]>;
 }
 
-export default (logger: Logger): ReservationRepository => {
+export default (logger: Logger, models: Models): ReservationRepository => {
   const create = async (params: CreateReservationParams) => {
     logger.info('Create a reservation for a room on a given timespan');
-    const reservation = await Reservation.findOrCreate({
+    return models.Reservation.findOrCreate({
       where: {
         [Op.or]: [
           { roomId: params.roomId },
@@ -47,24 +44,16 @@ export default (logger: Logger): ReservationRepository => {
       },
       raw: true,
     });
-
-    return reservation;
   };
 
-  const cancel = async (reservationId: string, userId: string) => {
-    logger.info('Cancel reservation');
-    const reservation = await Reservation.findOne({
+  const get = async (reservationId: string, userId: string) => {
+    logger.info('Get a single user reservation');
+    return  models.Reservation.findOne({
       where: {
         reservedBy: userId,
         reservationId,
       },
     });
-
-    if (reservation && !validateDateRange(reservation.startAt, new Date().toString())) {
-      throw new Error('Cannot cancel a current reservation');
-    }
-  
-    return reservation?.destroy();
   };
 
   const getReservations = async (params: GetReservationsParams) => {
@@ -76,7 +65,7 @@ export default (logger: Logger): ReservationRepository => {
     if (userId) whereParams.reservedBy = userId;
     else if (roomId) whereParams.roomId = roomId;
 
-    const reservations = await Reservation.findAll({
+    return models.Reservation.findAll({
       where: {
         ...whereParams,
         [Op.and]: [
@@ -86,25 +75,24 @@ export default (logger: Logger): ReservationRepository => {
       },
       include: [
         {
-          model: User,
+          model: models.User,
           as: 'user',
           attributes: ['firstName'],
         },
         { 
-          model: Room,
+          model: models.Room,
           as: 'room',
           attributes: ['description'],
         },
       ],
       order: [['startAt', 'asc']],
     });
-    return reservations;
   };
   
 
   return {
     create,
-    cancel,
+    get,
     getReservations,
   };
 };

@@ -1,7 +1,5 @@
 import type { Logger } from 'pino';
-import models from '../database/models';
-
-const { User } = models;
+import type { Models } from '../database/models';
 
 export interface UserParams extends Omit<UserAttributes, 'employeeId' | 'createdAt' | 'updatedAt'> {}
 
@@ -10,15 +8,15 @@ export interface UserRepository {
   getByEmail: (email: string) => Promise<UserAttributes | null>;
 }
 
-export default (logger: Logger): UserRepository => {
+export default (logger: Logger, models: Models): UserRepository => {
   const create = async (params: UserParams) => {
     logger.info('Register a new user to database');
-    return User.create({ ...params });
+    return models.User.create({ ...params });
   };
 
   const getByEmail = async (email: string) => {
     logger.info('Find registered user by email');
-    return User.findOne({ 
+    return models.User.findOne({ 
       where: { email }, 
       raw: true,
     });

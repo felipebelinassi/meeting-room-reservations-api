@@ -19,7 +19,6 @@ export default {
   resolve: async (_: any, args: UserScheduleQueryArgs, context: Context) => {
     const { userId } = authenticationMiddleware(context.request);
     const date = formatDate(args.date);
-
     const schedule = await context.repositories.reservation.getReservations({ userId, date });
     return { date, schedule };
   }, 

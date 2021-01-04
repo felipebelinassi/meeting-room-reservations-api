@@ -4,7 +4,7 @@ import employeeType from '../types/user';
 import newEmployee from '../types/inputs/new-user';
 
 interface CreateUserParams {
-  input: UserAttributes;
+  input: Omit<UserAttributes, 'userId'>;
 }
 
 export default {

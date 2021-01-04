@@ -75,12 +75,12 @@ describe('Reservation repository unit tests', () => {
       const { reservation: reservationRepository } = createRepositories(loggerMock);
   
       const expectedResponse = [
-        true,
         {
           reservationId: '3444b43b-119f-41ca-a7a2-36fb0dd8c27b',
           startAt: '08:00:00',
           endAt: '17:00:00',
         },
+        true,
       ];
 
   
@@ -92,7 +92,7 @@ describe('Reservation repository unit tests', () => {
         startTime: new Date().toString(),
         endTime: new Date().toString(),
       });
-      expect(typeof reservation).toBe(Array);
+      expect(reservation.length).toEqual(2);
       expect(reservation).toEqual(expectedResponse);
     });
   });
@@ -110,7 +110,7 @@ describe('Reservation repository unit tests', () => {
       const fakeReservationId = '3444b43b-119f-41ca-a7a2-36fb0dd8c27b';
       const fakeUserId = 'f083e48c-6423-48b1-ba28-d23052e97a88';
   
-      findOneSpy.mockResolvedValue(null);
+      findOneSpy.mockResolvedValue(expectedResponse);
   
       const reservation = await reservationRepository.get(fakeReservationId, fakeUserId);
       expect(reservation).toEqual(expectedResponse);

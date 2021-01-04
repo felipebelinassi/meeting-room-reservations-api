@@ -7,18 +7,6 @@ describe('Date time utils unit tests', () => {
       const formattedDate = dateTimeUtils.formatDate();
       expect(formattedDate).toMatch(/(\d{4})-(\d{2})-(\d{2})/);
     });
-
-    it('should return formatted timestamp and time for given period', () => {
-      const date = moment().format();
-      const formattedDateTime = dateTimeUtils.formatDateTime(date);
-  
-      expect(formattedDateTime).toEqual(
-        expect.objectContaining({
-          timestamp: expect.any(String),
-          time: expect.any(String),
-        }),
-      );
-    });
   
     it('should format time periods from an object as time and timestamp', () => {
       const periods = {

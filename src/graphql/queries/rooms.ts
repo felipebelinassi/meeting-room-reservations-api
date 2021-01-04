@@ -4,8 +4,8 @@ import Room from '../types/room';
 import { validateDateRange, formatTimePeriods } from '../../utils/date-time';
 
 interface RoomsQueryArgs {
-  from: string;
-  to: string;
+  from?: string;
+  to?: string;
 }
 
 export default {

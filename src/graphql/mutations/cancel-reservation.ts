@@ -1,6 +1,7 @@
 import { GraphQLNonNull, GraphQLString, GraphQLObjectType } from 'graphql';
 import { Context } from '../../context';
 import authenticationMiddleware from '../../middlewares/authentication';
+import { formatDate } from '../../utils/date-time';
 
 interface CancelReservationParams {
   reservationId: string;
@@ -26,6 +27,15 @@ export default {
   },
   resolve: async (_: any, { reservationId }: CancelReservationParams, context: Context) => {
     const { userId } = authenticationMiddleware(context.request);
-    return context.repositories.reservation.cancel(reservationId, userId);
+    const reservation = await context.repositories.reservation.get(reservationId, userId);
+    if (!reservation) throw new Error('Reservation not found');
+
+    const reservationStart = reservation.getDataValue('startAt');
+
+    if (formatDate(reservationStart) <= formatDate()) {
+      throw new Error('Cannot cancel this reservation');
+    }
+
+    return reservation.destroy();
   },
 };

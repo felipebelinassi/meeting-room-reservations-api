@@ -1,0 +1,12 @@
+{
+  "userId": "ac7d27b9-665d-4098-9f08-e2908f4600aa",
+  "firstName": "John",
+  "lastName": "Doe",
+  "username": "johndoe",
+  "email": "johndoe@gmail.com",
+  "password": "OI9G9RJpbDiWygAV1DwORu35bzUanrUXfL",
+  "createdAt": "2021-01-04T04:07:19.105Z",
+  "updatedAt": "2021-01-04T04:07:19.106Z",
+  "iat": "1609733240",
+  "exp": "1609736840"
+}

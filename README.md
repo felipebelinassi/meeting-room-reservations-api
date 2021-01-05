@@ -1,5 +1,5 @@
 # Meeting room reservations API 🏢
-> Express GraphQL API with JWT Authentication and PostgreSQL database
+> Express GraphQL API built with TypeScript and PostgreSQL database
 
 ## About  
 The proposal of this API is to serve coworking offices to allow the reservation of their meeting rooms. It allows an user to:

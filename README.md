@@ -44,6 +44,9 @@ This API is already prepared to avoid conflicting meetings created by different 
 6. Run database migrations and seeds using yarn or npm scripts  
 ```yarn db:migrate``` and ```yarn db:seed```
 
+7. Access http://localhost:3000/graphl and play with the API
+To see examples of queries and mutations, see [here](./src/graphql/EXAMPLES.md)
+
 ## Run tests
 
 - Run entire test suite (unit and integration)  
@@ -53,8 +56,7 @@ This API is already prepared to avoid conflicting meetings created by different 
 ```yarn test:unit```
 
 - Run only integration tests  
-*OBS*: To run integration tests, you need to create a local *test* database. You can do it by using ```npx sequelize-cli db:create --env=test``` after starting the local postgres instance via Docker.
-
+*OBS*: To run integration tests, you need to create a local *test* database. You can do it by using ```npx sequelize-cli db:create --env=test``` after starting the local postgres instance via Docker.  
 ```yarn test:unit```
 
 ## Environment variables

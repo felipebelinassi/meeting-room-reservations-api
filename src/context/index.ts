@@ -18,4 +18,3 @@ const context = (req: Request): Context => {
 };
 
 export default context;
-

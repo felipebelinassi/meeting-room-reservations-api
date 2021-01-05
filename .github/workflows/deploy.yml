@@ -14,8 +14,12 @@ jobs:
       PORT: ${{ secrets.PORT }}
       LOGGER_ENABLED: ${{ secrets.LOGGER_ENABLED }}
       LOGGER_LEVEL: ${{ secrets.LOGGER_LEVEL }}
-      DATABASE_URI: ${{ secrets.DATABASE_URI }}
-      DATABASE_DIALECT: ${{ secrets.DATABASE_DIALECT }}
+      DB_USERNAME: ${{ secrets.DB_USERNAME }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_PORT: ${{ secrets.DB_PORT }}
+      DB_DIALECT: ${{ secrets.DB_DIALECT }}
       TIMEZONE: ${{ secrets.TIMEZONE }}
       JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
       TOKEN_EXPIRES_IN: ${{ secrets.TOKEN_EXPIRES_IN }}
@@ -25,13 +29,15 @@ jobs:
         image: postgres
         env:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres@2020!
-          POSTGRES_DB: meeting-reservations
+          POSTGRES_PASSWORD: postgres@2020
+          POSTGRES_DB: test
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          - 5432:5432
 
     steps:
       - uses: actions/checkout@v2

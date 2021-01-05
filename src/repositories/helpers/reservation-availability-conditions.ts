@@ -14,29 +14,24 @@ export default (from: string, to: string) => {
   };
 
   const startIsBetweenRequestedPeriod = {
-    startAt: { 
+    startAt: {
       [Op.and]: {
         [Op.gte]: from,
-        [Op.lt]: to, 
+        [Op.lt]: to,
       },
     },
   };
 
   const endIsBetweenRequestedPeriod = {
-    endAt: { 
+    endAt: {
       [Op.and]: {
         [Op.gt]: from,
-        [Op.lte]: to, 
+        [Op.lte]: to,
       },
     },
   };
 
   return {
-    [Op.or]: [
-      containsRequestedPeriod,
-      isContainedInRequestedPeriod,
-      startIsBetweenRequestedPeriod,
-      endIsBetweenRequestedPeriod,
-    ],
+    [Op.or]: [containsRequestedPeriod, isContainedInRequestedPeriod, startIsBetweenRequestedPeriod, endIsBetweenRequestedPeriod],
   };
 };

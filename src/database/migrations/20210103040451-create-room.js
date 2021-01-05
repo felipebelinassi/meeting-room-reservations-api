@@ -17,8 +17,6 @@ module.exports = {
       close_at: {
         type: Sequelize.DataTypes.TIME,
       },
-    }, {
-      schema: 'meeting',
     });
   },
   down: (queryInterface, Sequelize) => queryInterface.dropTable('room'),

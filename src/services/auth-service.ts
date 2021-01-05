@@ -14,17 +14,13 @@ interface AuthService {
 }
 
 const authService = (config: AuthConfig): AuthService => {
-  const hashPassword = async (password: string, salt = 10) => 
-    bcrypt.hash(password, salt);
+  const hashPassword = async (password: string, salt = 10) => bcrypt.hash(password, salt);
 
-  const comparePasswords = async (password: string, hashedPassword: string) => 
-    bcrypt.compare(password, hashedPassword);
+  const comparePasswords = async (password: string, hashedPassword: string) => bcrypt.compare(password, hashedPassword);
 
-  const generateToken = (payload: Record<string, unknown>) => 
-    jwt.sign(payload, config.secret, { expiresIn: config.expiresIn });
+  const generateToken = (payload: Record<string, unknown>) => jwt.sign(payload, config.secret, { expiresIn: config.expiresIn });
 
-  const decodeToken = (token: string) => 
-    jwt.verify(token, config.secret) as UserAttributes;
+  const decodeToken = (token: string) => jwt.verify(token, config.secret) as UserAttributes;
 
   return {
     hashPassword,

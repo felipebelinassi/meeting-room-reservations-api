@@ -14,7 +14,7 @@ const loadConfig = (schema: Joi.ObjectSchema, envs: NodeJS.ProcessEnv) => {
     env: envVars.NODE_ENV,
     port: envVars.PORT,
     application: {
-      name, 
+      name,
       version,
     },
     logger: {
@@ -22,9 +22,14 @@ const loadConfig = (schema: Joi.ObjectSchema, envs: NodeJS.ProcessEnv) => {
       level: envVars.LOGGER_LEVEL,
     },
     database: {
-      uri: envVars.DATABASE_URI,
-      dialect: envVars.DATABASE_DIALECT,
+      host: envVars.DB_HOST,
+      database: envVars.DB_NAME,
+      port: envVars.DB_PORT,
+      username: envVars.DB_USERNAME,
+      password: envVars.DB_PASSWORD,
+      dialect: envVars.DB_DIALECT,
       timezone: envVars.TIMEZONE,
+      logging: envVars.DB_LOGGING === 'true',
     },
     auth: {
       secret: envVars.JWT_SECRET_KEY,

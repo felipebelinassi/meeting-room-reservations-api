@@ -1,42 +1,45 @@
 import type { Logger } from 'pino';
 import sequelize, { Op } from 'sequelize';
-import models from '../database/models';
+import type { Models } from '../database/models';
 import { RoomInstance } from '../database/models/room';
 import checkRoomAvailability from './helpers/reservation-availability-conditions';
 
-const { Room, Reservation } = models;
 interface AvailableRoomParams {
   from: string;
   to: string;
   startHour: string;
   endHour: string;
 }
+
 export interface RoomRepository {
   getRooms: () => Promise<RoomInstance[]>;
   getAvailable: (params: AvailableRoomParams) => Promise<RoomInstance[]>;
-  getSchedule: (roomId: string, date: string) => Promise<RoomInstance | null>;
+  isRoomOpen: (roomId: string, startHour: string, endHour: string) => Promise<boolean>;
 }
 
-export default (logger: Logger): RoomRepository => {
+export default (logger: Logger, models: Models): RoomRepository => {
   const getRooms = async () => {
     logger.info('Get list of registered rooms');
-    return Room.findAll();
+    return models.Room.findAll();
   };
 
   const getAvailable = async (params: AvailableRoomParams) => {
     logger.info('Search available rooms at given timespan');
-    const availableRooms = await Room.findAll({
+    const availableRooms = await models.Room.findAll({
       where: {
         openAt: { [Op.lte]: params.startHour },
         closeAt: { [Op.gte]: params.endHour },
         [Op.and]: sequelize.literal('"roomReservations" IS NULL'),
       },
-      include: [{
-        model: Reservation,
-        required: false,
-        as: 'roomReservations',
-        where: checkRoomAvailability(params.from, params.to),
-      }],
+      include: [
+        {
+          model: models.Reservation,
+          required: false,
+          as: 'roomReservations',
+          where: checkRoomAvailability(params.from, params.to),
+        },
+      ],
+      order: [['openAt', 'asc']],
     });
 
     logger.info(`Found ${availableRooms.length} rooms available for the desired period`);
@@ -44,33 +47,18 @@ export default (logger: Logger): RoomRepository => {
     return availableRooms;
   };
 
-  const getSchedule = async (roomId: string, date: string) => {
-    logger.info('Get room meeting schedule');
-    return Room.findOne({
-      where: { roomId },
-      include: [{
-        model: Reservation,
-        required: false,
-        as: 'roomReservations',
-        where: {
-          [Op.and]: [
-            sequelize.where(sequelize.fn('date', sequelize.col('start_at')), '=', date),
-            sequelize.where(sequelize.fn('date', sequelize.col('end_at')), '=', date),
-          ],
-        },
-      }],
-      order: [
-        [{
-          model: Reservation,
-          as: 'roomReservations',
-        }, 'startAt', 'asc'],
-      ],
-    });
-  };
+  const isRoomOpen = async (roomId: string, startHour: string, endHour: string) =>
+    !!(await models.Room.findOne({
+      where: {
+        roomId,
+        openAt: { [Op.lte]: startHour },
+        closeAt: { [Op.gte]: endHour },
+      },
+    }));
 
   return {
     getRooms,
     getAvailable,
-    getSchedule,
+    isRoomOpen,
   };
 };

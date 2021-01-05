@@ -1,7 +1,7 @@
 import { GraphQLNonNull, GraphQLString, GraphQLObjectType } from 'graphql';
 import { Context } from '../../context';
 import authenticationMiddleware from '../../middlewares/authentication';
-import { formatDate } from '../../utils/date-time';
+import { formatTimestamp } from '../../utils/date-time';
 
 interface CancelReservationParams {
   reservationId: string;
@@ -32,7 +32,7 @@ export default {
 
     const reservationStart = reservation.getDataValue('startAt');
 
-    if (formatDate(reservationStart) <= formatDate()) {
+    if (formatTimestamp(reservationStart) <= formatTimestamp()) {
       throw new Error('Cannot cancel this reservation');
     }
 

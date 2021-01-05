@@ -9,14 +9,13 @@ export default function createModels(db = instance.sequelize) {
     Room: roomFactory(db),
     Reservation: reservationFactory(db),
   };
-  
-  Object.values(models).map(model => {
+
+  Object.values(models).map((model) => {
     if (model.prototype.associate) model.prototype.associate(models);
     return models;
   });
-  
+
   return models;
 }
 
 export type Models = ReturnType<typeof createModels>;
-

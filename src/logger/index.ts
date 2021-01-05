@@ -5,7 +5,8 @@ interface LoggerConfig {
   level: string;
 }
 
-export default (config: LoggerConfig) => pino({
-  enabled: config.enabled,
-  level: config.level,
-});
+export default (config: LoggerConfig) =>
+  pino({
+    enabled: config.enabled,
+    level: config.level,
+  });

@@ -5,7 +5,7 @@ interface DateTime {
   time: string;
 }
 
-const formatTimestamp = (date?: string) => moment(date).format();
+export const formatTimestamp = (date?: string) => moment(date).format();
 
 export const formatDate = (date?: string) => moment(date).format('YYYY-MM-DD');
 
@@ -13,7 +13,7 @@ export const formatTime = (date: string) => moment(date).format('HH:mm:ss');
 
 export const formatTimePeriods = (params: Record<string, string>) => {
   const response = {} as Record<string, DateTime>;
-  Object.keys(params).forEach(key => {
+  Object.keys(params).forEach((key) => {
     response[key] = {
       timestamp: formatTimestamp(params[key]),
       time: formatTime(params[key]),
@@ -31,4 +31,4 @@ export const validateDateRange = (start: string, end: string) => {
   const isValidRange = endTimestamp > startTimestamp;
 
   return isValidStartDate && isValidRange;
-}; 
+};

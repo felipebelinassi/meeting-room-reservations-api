@@ -13,13 +13,16 @@ app.locals.logger = logger;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/graphql', graphqlHTTP((req) => ({
-  schema,
-  graphiql: { headerEditorEnabled: true },
-  context: context(req as Request),
-})));
+app.use(
+  '/graphql',
+  graphqlHTTP((req) => ({
+    schema,
+    graphiql: { headerEditorEnabled: true },
+    context: context(req as Request),
+  })),
+);
 
-export const start = (port: number): Promise<void> => 
+export const start = (port: number): Promise<void> =>
   new Promise<void>((resolve) => {
     app.listen(port, async () => {
       logger.info(`Application listening at port ${port}`);

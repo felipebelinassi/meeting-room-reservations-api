@@ -30,7 +30,7 @@ export default {
     if (!validateDateRange(from, to)) {
       throw new Error('Time range is not valid');
     }
-  
+
     const { startDate, endDate } = formatTimePeriods({
       startDate: from,
       endDate: to,

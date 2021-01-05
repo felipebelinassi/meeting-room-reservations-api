@@ -14,7 +14,7 @@ const loadConfig = (schema: Joi.ObjectSchema, envs: NodeJS.ProcessEnv) => {
     env: envVars.NODE_ENV,
     port: envVars.PORT,
     application: {
-      name, 
+      name,
       version,
     },
     logger: {

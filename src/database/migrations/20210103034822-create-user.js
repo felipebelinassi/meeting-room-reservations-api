@@ -32,8 +32,6 @@ module.exports = {
         type: Sequelize.DataTypes.DATE,
         defaultValue: Sequelize.fn('now'),
       },
-    }, {
-      schema: 'meeting',
     });
   },
   down: (queryInterface, Sequelize) => queryInterface.dropTable('user'),

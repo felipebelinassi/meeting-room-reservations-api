@@ -5,8 +5,8 @@ services:
     image: postgres:10.4
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres@2020!
-      POSTGRES_DB: meeting-reservations
+      POSTGRES_PASSWORD: postgres@2020
+      POSTGRES_DB: coworking
     ports:
       - '5432:5432'
     healthcheck:
@@ -16,8 +16,10 @@ services:
       retries: 5
     networks:
       - postgres-network
+    volumes:
+      - db-volume:/var/lib/postgresql/data
 
-  meeting-api:
+  app:
     container_name: meeting-api
     restart: always
     build:
@@ -29,20 +31,15 @@ services:
     links: 
       - postgres
     environment:
-      NODE_ENV: development
-      PORT: 3000
-      LOGGER_ENABLED: 'true'
-      LOGGER_LEVEL: info
-      DATABASE_URI: postgres://postgres:postgres@2020!@postgres:5432/meeting-reservations
-      DATABASE_DIALECT: postgres
-      TIMEZONE: America/Sao_Paulo
-      JWT_SECRET_KEY: superdupersecret
-      TOKEN_EXPIRES_IN: 3600000
+      DB_HOST: postgres
     ports:
-      - "3000:3000"
+      - '3000:3000'
     networks:
       - postgres-network
 
 networks: 
   postgres-network:
     driver: bridge
+
+volumes:
+  db-volume:

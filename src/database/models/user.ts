@@ -15,7 +15,7 @@ export type UserModel = ModelCtor<UserInstance>;
 export default (sequelize: Sequelize): UserModel => {
   const User = sequelize.define<UserInstance>('User', {
     userId: {
-      type: DataTypes.UUIDV4,
+      type: DataTypes.UUID,
       field: 'user_id',
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
@@ -51,7 +51,6 @@ export default (sequelize: Sequelize): UserModel => {
     },
   }, {
     tableName: 'user',
-    schema: 'meeting',
   });
 
   User.addHook('beforeCreate', async (instance: UserInstance) => {

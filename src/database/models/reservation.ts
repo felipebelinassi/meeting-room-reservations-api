@@ -12,18 +12,18 @@ export type ReservationModel = ModelCtor<ReservationInstance>;
 export default (sequelize: Sequelize): ReservationModel => {
   const Reservation = sequelize.define<ReservationInstance>('Reservation', {
     reservationId: {
-      type: DataTypes.UUIDV4,
+      type: DataTypes.UUID,
       field: 'reservation_id',
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
     },
     roomId: {
-      type: DataTypes.UUIDV4,
+      type: DataTypes.UUID,
       field: 'room_id',
       defaultValue: DataTypes.UUIDV4,
     },
     reservedBy: {
-      type: DataTypes.UUIDV4,
+      type: DataTypes.UUID,
       field: 'reserved_by',
       defaultValue: DataTypes.UUIDV4,
     },
@@ -45,7 +45,6 @@ export default (sequelize: Sequelize): ReservationModel => {
     createdAt: false,
     updatedAt: false,
     tableName: 'reservation',
-    schema: 'meeting',
   });
 
   Reservation.prototype.associate = (models: Record<string, ModelCtor<any>>) => {

@@ -12,7 +12,7 @@ export type RoomModel = ModelCtor<RoomInstance>;
 export default (sequelize: Sequelize): RoomModel => {
   const Room = sequelize.define<RoomInstance>('Room', {
     roomId: {
-      type: DataTypes.UUIDV4,
+      type: DataTypes.UUID,
       field: 'room_id',
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
@@ -32,7 +32,6 @@ export default (sequelize: Sequelize): RoomModel => {
     createdAt: false,
     updatedAt: false,
     tableName: 'room',
-    schema: 'meeting',
   });
 
   Room.prototype.associate = (models: Record<string, ModelCtor<any>>) => {

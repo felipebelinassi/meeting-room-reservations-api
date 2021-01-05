@@ -1,9 +1,11 @@
 import { Sequelize } from 'sequelize';
 import config from '../../config';
 
-const { uri, dialect, timezone } = config.database;
+const { database, username, password, ...dbConfig } = config.database;
 
-const sequelize = new Sequelize(uri, { dialect, timezone });
+const sequelize = new Sequelize(
+  database, username, password, { ...dbConfig, logging: false },
+);
 
 const db = {
   sequelize,

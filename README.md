@@ -4,9 +4,10 @@
 ## About  
 The proposal of this API is to serve coworking offices to allow the reservation of their meeting rooms. It allows an user to:
 * Registrate into the coworking database
+  - Block duplicated username or duplicated email in the database
 * Login
-* Search for available rooms for a given timespan
 * List all rooms of the coworking space
+* Search for available rooms for a given timespan
 * View meeting schedule from himself or from a specific room
 * Book a meeting room for a given timespan
   - Block user from creating past meetings or meetings with invalid time range

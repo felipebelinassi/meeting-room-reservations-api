@@ -1,4 +1,4 @@
-# Meeting room reservations API 🏢
+#  🏢 Meeting room reservations API
 [![Actions Status](https://github.com/felipebelinassi/meeting-room-reservations-api/workflows/Deploy%20Application/badge.svg)](https://github.com/felipebelinassi/meeting-room-reservations-api/actions)
 
 > Express GraphQL API built with TypeScript and PostgreSQL database

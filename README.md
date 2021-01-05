@@ -1,5 +1,8 @@
 # Meeting room reservations API 🏢
+[![Actions Status](https://github.com/felipebelinassi/meeting-room-reservations-api/workflows/Deploy%20Application/badge.svg)](https://github.com/felipebelinassi/meeting-room-reservations-api/actions)
+
 > Express GraphQL API built with TypeScript and PostgreSQL database
+![Stack](https://i.imgur.com/VHKwYRV.png)
 
 ## About  
 The proposal of this API is to serve coworking offices to allow the reservation of their meeting rooms. It allows an user to:

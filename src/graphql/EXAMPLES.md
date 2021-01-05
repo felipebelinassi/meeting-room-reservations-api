@@ -20,7 +20,7 @@ mutation {
 }
 ```
 
-### Authenticate user and generate token
+### Authenticate user and generate token:
 
 ```graphql 
 mutation {
@@ -34,10 +34,8 @@ mutation {
 }
 ```
 
-### Create room reservation  
-*Date/time accepted formats*:
-- YYYY-MM-DDTHH:mm
-- YYYY-MM-DD HH:mm:ss
+### Create room reservation:  
+*Date/time accepted formats*: ```YYYY-MM-DDTHH:mm``` or ```YYYY-MM-DD HH:mm:ss```   
 
 **ATTENTION:** *Requires header **x-access-token** (token returned on login mutation)*
 
@@ -59,7 +57,7 @@ mutation {
 }
 ```
 
-### Cancel reservation
+### Cancel reservation:  
 **ATTENTION:** *Requires header **x-access-token** (token returned on login mutation)*
 
 ```graphql
@@ -74,8 +72,8 @@ mutation {
 
 # Queries
 
-### Get list of rooms / available rooms by timespan  
-*Date/time accepted formats*: ```YYYY-MM-DDTHH:mm``` or ```YYYY-MM-DD HH:mm:ss```
+### Get list of rooms / available rooms by timespan:  
+*Date/time accepted formats*: ```YYYY-MM-DDTHH:mm``` or ```YYYY-MM-DD HH:mm:ss```  
 *OBS:*  Parameters *from* and *to* are optional. If not informed, query will return all existing rooms)  
 
 ```graphql
@@ -92,8 +90,8 @@ query {
 }
 ```
 
-### View user meetings schedule  
-*Date accepted format*: ```YYYY-MM-DD```
+### View user meetings schedule:  
+*Date accepted format*: ```YYYY-MM-DD```  
 *OBS:* Parameter *date* is optional. If not informed, query will return schedule for current day.  
 
 **ATTENTION:** *Requires header **x-access-token** (token returned on login mutation)*
@@ -117,8 +115,8 @@ query {
 }
 ```
 
-### View room meetings schedule
-*Date accepted format*: ```YYYY-MM-DD```
+### View room meetings schedule:  
+*Date accepted format*: ```YYYY-MM-DD```  
 *OBS:* Parameter *date* is optional. If not informed, query will return schedule for current day.  
 
 ```graphql

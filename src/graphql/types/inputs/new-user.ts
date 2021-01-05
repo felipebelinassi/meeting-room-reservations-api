@@ -10,7 +10,7 @@ export default new GraphQLInputObjectType({
       type: new GraphQLNonNull(GraphQLString),
     },
     username: {
-      type: new GraphQLNonNull(GraphQLString), 
+      type: new GraphQLNonNull(GraphQLString),
     },
     email: {
       type: new GraphQLNonNull(GraphQLString),

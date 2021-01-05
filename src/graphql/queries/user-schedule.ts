@@ -21,5 +21,5 @@ export default {
     const date = formatDate(args.date);
     const schedule = await context.repositories.reservation.getReservations({ userId, date });
     return { date, schedule };
-  }, 
+  },
 };

@@ -3,7 +3,7 @@ const { v4: uuidV4 } = require('uuid');
 
 module.exports = {
   up: (queryInterface, Sequelize) => queryInterface.bulkInsert({
-    tableName: 'room', schema: 'meeting'
+    tableName: 'room',
   }, [{
       room_id: uuidV4(),
       description: 'Meeting Room 1',
@@ -24,6 +24,6 @@ module.exports = {
     }],
   ),
   down: (queryInterface, Sequelize) => queryInterface.bulkDelete({
-    tableName: 'room', schema: 'meeting'
+    tableName: 'room',
   }, null, {}),
 };

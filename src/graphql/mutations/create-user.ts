@@ -14,6 +14,5 @@ export default {
       type: GraphQLNonNull(newEmployee),
     },
   },
-  resolve: async (_: any, { input }: CreateUserParams, context: Context) => 
-    context.repositories.user.create(input),
+  resolve: async (_: any, { input }: CreateUserParams, context: Context) => context.repositories.user.create(input),
 };

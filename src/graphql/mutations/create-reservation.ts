@@ -10,7 +10,7 @@ interface CreateReservationParams {
     roomId: string;
     start: string;
     end: string;
-  }
+  };
 }
 
 export default {
@@ -33,9 +33,7 @@ export default {
       endDate: end,
     });
 
-    const isRoomOpen = await repositories.room.isRoomOpen(
-      roomId, startDate.time, endDate.time,
-    );
+    const isRoomOpen = await repositories.room.isRoomOpen(roomId, startDate.time, endDate.time);
 
     if (!isRoomOpen) throw new Error('Selected room is not open!');
 

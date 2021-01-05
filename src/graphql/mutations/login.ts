@@ -16,7 +16,6 @@ export default {
     email: {
       description: 'User registered email',
       type: new GraphQLNonNull(GraphQLString),
-      
     },
     password: {
       description: 'User registered password',
@@ -25,7 +24,7 @@ export default {
   },
   resolve: async (_: any, { email, password }: CreateTokenParams, context: Context) => {
     const user = await context.repositories.user.getByEmail(email);
-    
+
     if (!user) {
       throw new Error('The email was not found in the database');
     }

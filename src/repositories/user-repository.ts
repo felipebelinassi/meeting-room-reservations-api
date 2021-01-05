@@ -16,8 +16,8 @@ export default (logger: Logger, models: Models): UserRepository => {
 
   const getByEmail = async (email: string) => {
     logger.info('Find registered user by email');
-    return models.User.findOne({ 
-      where: { email }, 
+    return models.User.findOne({
+      where: { email },
       raw: true,
     });
   };

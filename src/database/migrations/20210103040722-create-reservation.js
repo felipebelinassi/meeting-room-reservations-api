@@ -12,7 +12,6 @@ module.exports = {
         references: {
           model: {
             tableName: 'room',
-            schema: 'meeting'
           },
           key: 'room_id'
         },
@@ -22,7 +21,6 @@ module.exports = {
         references: {
           model: {
             tableName: 'user',
-            schema: 'meeting'
           },
           key: 'user_id'
         }
@@ -33,11 +31,9 @@ module.exports = {
       end_at: {
         type: Sequelize.DataTypes.DATE,
       }
-    }, {
-      schema: 'meeting',
     });
 
-    await queryInterface.addConstraint('meeting.reservation', {
+    await queryInterface.addConstraint('reservation', {
       type: 'unique',
       fields: ['reservation_id', 'start_at', 'end_at'],
       name: 'reservation_un',

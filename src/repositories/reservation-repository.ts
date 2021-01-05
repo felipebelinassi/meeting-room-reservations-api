@@ -28,11 +28,8 @@ export default (logger: Logger, models: Models): ReservationRepository => {
     logger.info('Create a reservation for a room on a given timespan');
     return models.Reservation.findOrCreate({
       where: {
-        [Op.or]: [
-          { roomId: params.roomId },
-          { reservedBy: params.userId },
-        ],
-        [Op.and]: { 
+        [Op.or]: [{ roomId: params.roomId }, { reservedBy: params.userId }],
+        [Op.and]: {
           ...checkRoomAvailability(params.startTime, params.endTime),
         },
       },
@@ -48,7 +45,7 @@ export default (logger: Logger, models: Models): ReservationRepository => {
 
   const get = async (reservationId: string, userId: string) => {
     logger.info('Get a single user reservation');
-    return  models.Reservation.findOne({
+    return models.Reservation.findOne({
       where: {
         reservedBy: userId,
         reservationId,
@@ -79,7 +76,7 @@ export default (logger: Logger, models: Models): ReservationRepository => {
           as: 'user',
           attributes: ['firstName'],
         },
-        { 
+        {
           model: models.Room,
           as: 'room',
           attributes: ['description'],
@@ -88,7 +85,6 @@ export default (logger: Logger, models: Models): ReservationRepository => {
       order: [['startAt', 'asc']],
     });
   };
-  
 
   return {
     create,

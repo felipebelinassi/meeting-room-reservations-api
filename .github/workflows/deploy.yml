@@ -25,8 +25,8 @@ jobs:
         image: postgres
         env:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres@2020!
-          POSTGRES_DB: meeting-reservations
+          POSTGRES_PASSWORD: postgres@2020
+          POSTGRES_DB: test
         options: >-
           --health-cmd pg_isready
           --health-interval 10s

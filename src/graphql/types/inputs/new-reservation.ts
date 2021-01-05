@@ -7,7 +7,7 @@ export default new GraphQLInputObjectType({
       type: new GraphQLNonNull(GraphQLID),
     },
     start: {
-      type: new GraphQLNonNull(GraphQLString), 
+      type: new GraphQLNonNull(GraphQLString),
     },
     end: {
       type: new GraphQLNonNull(GraphQLString),

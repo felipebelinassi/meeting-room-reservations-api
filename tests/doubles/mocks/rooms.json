@@ -1,0 +1,14 @@
+[
+  {
+    "roomId": "70cdacad-d62c-468f-b29c-8b4027cfaf3f",
+    "description": "Room 1",
+    "openAt": "08:00:00",
+    "closeAt": "15:00:00"
+  },
+  {
+    "roomId": "750001d3-2c6a-4006-9ec5-7633d97fcc86",
+    "description": "Room 2",
+    "openAt": "12:00:00",
+    "closeAt": "15:00:00"
+  }
+]

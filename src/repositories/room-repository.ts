@@ -31,12 +31,14 @@ export default (logger: Logger, models: Models): RoomRepository => {
         closeAt: { [Op.gte]: params.endHour },
         [Op.and]: sequelize.literal('"roomReservations" IS NULL'),
       },
-      include: [{
-        model: models.Reservation,
-        required: false,
-        as: 'roomReservations',
-        where: checkRoomAvailability(params.from, params.to),
-      }],
+      include: [
+        {
+          model: models.Reservation,
+          required: false,
+          as: 'roomReservations',
+          where: checkRoomAvailability(params.from, params.to),
+        },
+      ],
       order: [['openAt', 'asc']],
     });
 
@@ -45,14 +47,14 @@ export default (logger: Logger, models: Models): RoomRepository => {
     return availableRooms;
   };
 
-  const isRoomOpen = async (roomId: string, startHour: string, endHour: string) => 
-    !!await models.Room.findOne({
+  const isRoomOpen = async (roomId: string, startHour: string, endHour: string) =>
+    !!(await models.Room.findOne({
       where: {
         roomId,
         openAt: { [Op.lte]: startHour },
         closeAt: { [Op.gte]: endHour },
       },
-    });
+    }));
 
   return {
     getRooms,

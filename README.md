@@ -45,7 +45,7 @@ This API is already prepared to avoid conflicting meetings created by different 
 ```yarn db:migrate``` and ```yarn db:seed```
 
 7. Access http://localhost:3000/graphl and play with the API  
-To see examples of queries and mutations, see **[here]**(./src/graphql/EXAMPLES.md)
+To see examples of queries and mutations, see [**here**](./src/graphql/EXAMPLES.md)
 
 ## Run tests
 

@@ -1,6 +1,6 @@
 # Mutations
 
-Create new user:
+### Create new user:
 
 ```graphql
 mutation {
@@ -20,7 +20,7 @@ mutation {
 }
 ```
 
-Authenticate user and generate token
+### Authenticate user and generate token
 
 ```graphql 
 mutation {
@@ -34,12 +34,12 @@ mutation {
 }
 ```
 
-Create room reservation  
+### Create room reservation  
 *Date/time accepted formats*:
 - YYYY-MM-DDTHH:mm
 - YYYY-MM-DD HH:mm:ss
 
-*Requires header **x-access-token** (token returned on login mutation)*
+**ATTENTION:** *Requires header **x-access-token** (token returned on login mutation)*
 
 ```graphql
 mutation {
@@ -59,10 +59,8 @@ mutation {
 }
 ```
 
-Cancel reservation
-
-*Requires header **x-access-token** (token returned on login mutation)*
-
+### Cancel reservation
+**ATTENTION:** *Requires header **x-access-token** (token returned on login mutation)*
 
 ```graphql
 mutation {
@@ -76,12 +74,9 @@ mutation {
 
 # Queries
 
-Get list of rooms / available rooms by timespan
-*Date/time accepted formats*:
-- YYYY-MM-DDTHH:mm
-- YYYY-MM-DD HH:mm:ss
-
-* Parameters *from* and *to* are optional. If not informed, query will return all existing rooms)  
+### Get list of rooms / available rooms by timespan  
+*Date/time accepted formats*: ```YYYY-MM-DDTHH:mm``` or ```YYYY-MM-DD HH:mm:ss```
+*OBS:*  Parameters *from* and *to* are optional. If not informed, query will return all existing rooms)  
 
 ```graphql
 query {
@@ -97,13 +92,11 @@ query {
 }
 ```
 
-View user meetings schedule
-*Date accepted format*:
-- YYYY-MM-DD
+### View user meetings schedule  
+*Date accepted format*: ```YYYY-MM-DD```
+*OBS:* Parameter *date* is optional. If not informed, query will return schedule for current day.  
 
-* Parameter *date* is optional. If not informed, query will return schedule for current day.  
-
-*Requires header **x-access-token** (token returned on login mutation)*
+**ATTENTION:** *Requires header **x-access-token** (token returned on login mutation)*
 
 ```graphql
 query {
@@ -124,11 +117,9 @@ query {
 }
 ```
 
-View room meetings schedule
-*Date accepted format*:
-- YYYY-MM-DD
-
-* Parameter *date* is optional. If not informed, query will return schedule for current day.  
+### View room meetings schedule
+*Date accepted format*: ```YYYY-MM-DD```
+*OBS:* Parameter *date* is optional. If not informed, query will return schedule for current day.  
 
 ```graphql
 query {

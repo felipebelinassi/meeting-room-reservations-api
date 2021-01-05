@@ -27,32 +27,32 @@ This API is already prepared to avoid conflicting meetings created by different 
 
 ## Getting started
 
-1. Clone this repository
+1. Clone this repository  
 ```git clone https://github.com/felipebelinassi/meeting-room-reservations-api```
 
-2. cd into the directory
+2. cd into the directory  
 ```cd meeting-room-reservations-api```
 
 3. Create .env file (see [Environment Variables](#environment-variables) section)
 
-4. Install dependencies using npm or yarn
+4. Install dependencies using npm or yarn  
 ```yarn```
 
-5. Run with docker
+5. Run with docker  
 ```docker-compose up -d```
 
-6. Run database migrations and seeds using yarn or npm scripts
+6. Run database migrations and seeds using yarn or npm scripts  
 ```yarn db:migrate``` and ```yarn db:seed```
 
 ## Run tests
 
-- Run entire test suite (unit and integration)
+- Run entire test suite (unit and integration)  
 ```yarn test```
 
-- Run only unit tests
+- Run only unit tests  
 ```yarn test:unit```
 
-- Run only integration tests
+- Run only integration tests  
 *OBS*: To run integration tests, you need to create a local *test* database. You can do it by using ```npx sequelize-cli db:create --env=test``` after starting the local postgres instance via Docker.
 
 ```yarn test:unit```
@@ -60,7 +60,6 @@ This API is already prepared to avoid conflicting meetings created by different 
 ## Environment variables
 This project uses dotenv package to manage environment variables. To set your variables, create a *.env* file (or just rename the *.example.env*) which contains all the environments needed to run the application. All variables are **required**.
 
-```
 *NODE_ENV* -> application environment  
 *PORT* -> port where the server will start  
 *LOGGER_ENABLED* -> Flag to indicate if application will log messages using Pino logger  
@@ -74,8 +73,7 @@ This project uses dotenv package to manage environment variables. To set your va
 *TIMEZONE* -> Database timezone  
 *JWT_SECRET_KEY* -> Secret value that JWT tokens should be signed with  
 *TOKEN_EXPIRES_IN* -> JWT expiration time
-```
 
 ## Author
-👤 Felipe Belinassi
+👨‍💻 Felipe Belinassi  
 📫 Reach me at my [email](mailto:felipebelinassi@gmail.com) or [LinkedIn](https://www.linkedin.com/in/felipe-belinassi/).

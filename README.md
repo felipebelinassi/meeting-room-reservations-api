@@ -6,11 +6,14 @@ The proposal of this API is to serve coworking offices to allow the reservation 
 * Registrate into the coworking database
 * Login
 * Search for available rooms for a given timespan
+* List all rooms of the coworking space
 * View meeting schedule from himself or from a specific room
 * Book a meeting room for a given timespan
+  - Block user from creating past meetings or meetings with invalid time range
+  - Prevents user from creating conflicts with himself
+  - Prevents conflicting meetings created by different users
 * Cancel a reservation
-
-This API is already prepared to avoid conflicting meetings created by different users for one room.  
+  - Block user from canceling meetings that already started
 
 ## Features
 * Express and Express GraphQL server

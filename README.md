@@ -45,7 +45,7 @@ This API is already prepared to avoid conflicting meetings created by different 
 6. Run database migrations and seeds using yarn or npm scripts  
 ```yarn db:migrate``` and ```yarn db:seed```
 
-7. Access http://localhost:3000/graphl and play with the API  
+7. Access http://localhost:3000/graphql and play with the API  
 To see examples of queries and mutations, see [**here**](./src/graphql/EXAMPLES.md)
 
 ## Run tests
@@ -57,7 +57,7 @@ To see examples of queries and mutations, see [**here**](./src/graphql/EXAMPLES.
 ```yarn test:unit```
 
 - Run only integration tests  
-```yarn test:unit```  
+```yarn test:integration```  
 *OBS*: To run integration tests, you need to create a local *test* database. You can do it by using ```npx sequelize-cli db:create --env=test``` after starting the local postgres instance via Docker.  
 
 ## Environment variables
@@ -69,7 +69,7 @@ This project uses dotenv package to manage environment variables. To set your va
 *LOGGER_LEVEL* -> Level to log messages  
 *DB_USERNAME* -> PostgreSQL database user  
 *DB_PASSWORD* -> PostgreSQL database password  
-*DB_HOST* -> PostgreSQL host  
+*DB_HOST* -> PostgreSQL host or PostgreSQL container name (if running on Docker)
 *DB_NAME* -> PostgreSQL database name  
 *DB_PORT* -> PostgreSQL database port  
 *DB_DIALECT* -> Database dialect (postgres)  

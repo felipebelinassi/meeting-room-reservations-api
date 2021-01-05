@@ -24,6 +24,7 @@ This API is already prepared to avoid conflicting meetings created by different 
 * Logs with Pino
 * Joi for config schema validation
 * Docker ready environment with docker-compose and Dockerfile
+* GitHub Actions CI workflow
 
 ## Getting started
 

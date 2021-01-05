@@ -5,4 +5,4 @@ const loggerMock = {
   error: () => {},
 };
 
-export default loggerMock;
+export default () => loggerMock;

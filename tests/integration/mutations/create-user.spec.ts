@@ -1,6 +1,3 @@
-import supertest from 'supertest';
-import { app } from '../../../src/app';
-
 describe('Create user integration tests', () => {
   const defaultUser = {
     firstName: 'John',
@@ -30,13 +27,13 @@ describe('Create user integration tests', () => {
       }
     `;
 
-    const response = await supertest(app)
+    const { body } = await global.testRequest
       .post('/graphql')
       .send({ query: createUserMutation })
       .expect(200)
       .expect('Content-Type', /json/);
 
-    expect(response.body.data.createUser).toEqual({
+    expect(body.data.createUser).toEqual({
       ...defaultUser,
       userId: expect.any(String),
       password: '******',
@@ -63,7 +60,7 @@ describe('Create user integration tests', () => {
       }
     `;
 
-    const { body } = await supertest(app)
+    const { body } = await global.testRequest
       .post('/graphql')
       .send({ query: createUserMutation })
       .expect(200)
@@ -93,7 +90,7 @@ describe('Create user integration tests', () => {
       }
     `;
 
-    const { body } = await supertest(app)
+    const { body } = await global.testRequest
       .post('/graphql')
       .send({ query: createUserMutation })
       .expect(200)

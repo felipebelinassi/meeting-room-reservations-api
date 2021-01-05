@@ -15,7 +15,7 @@
     "db:seed": "npx sequelize-cli db:seed:all",
     "test": "npm run clean && npm run test:unit && npm run test:integration",
     "test:unit": "jest",
-    "test:integration": "jest --projects ./tests/integration --runInBand --detectOpenHandles",
+    "test:integration": "jest --projects ./tests/integration --runInBand",
     "lint": "eslint ./src --ext .ts",
     "lint:fix": "yarn lint -- --fix",
     "style:check": "prettier --check src/**/*.ts",

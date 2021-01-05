@@ -1,6 +1,4 @@
-import supertest from 'supertest';
 import moment from 'moment';
-import { app } from '../../../src/app';
 import services from '../../../src/services';
 import createModels from '../../../src/database/models';
 import roomsMock from '../../doubles/mocks/rooms.json';
@@ -56,7 +54,7 @@ describe('Get rooms schedule integration tests', () => {
       }
     `;
 
-    const { body } = await supertest(app)
+    const { body } = await global.testRequest
       .post('/graphql')
       .set({ 'x-access-token': token })
       .send({ query: userScheduleQuery })
@@ -87,7 +85,7 @@ describe('Get rooms schedule integration tests', () => {
 
     const todayDate = moment().format('YYYY-MM-DD');
 
-    const { body } = await supertest(app)
+    const { body } = await global.testRequest
       .post('/graphql')
       .set({ 'x-access-token': token })
       .send({ query: userScheduleQuery })

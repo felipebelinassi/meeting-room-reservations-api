@@ -1,5 +1,3 @@
-import supertest from 'supertest';
-import { app } from '../../../src/app';
 import createModels from '../../../src/database/models';
 
 const { User } = createModels();
@@ -31,7 +29,7 @@ describe('Authenticate user integration tests', () => {
       }
     `;
 
-    const { body } = await supertest(app)
+    const { body } = await global.testRequest
       .post('/graphql')
       .send({ query: loginMutation })
       .expect(200)
@@ -56,7 +54,7 @@ describe('Authenticate user integration tests', () => {
       }
     `;
 
-    const { body } = await supertest(app)
+    const { body } = await global.testRequest
       .post('/graphql')
       .send({ query: loginMutation })
       .expect(200)
@@ -79,7 +77,7 @@ describe('Authenticate user integration tests', () => {
       }
     `;
 
-    const { body } = await supertest(app)
+    const { body } = await global.testRequest
       .post('/graphql')
       .send({ query: loginMutation })
       .expect(200)

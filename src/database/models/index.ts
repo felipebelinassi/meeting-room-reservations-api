@@ -1,7 +1,7 @@
 import userFactory from './user';
 import roomFactory from './room';
 import reservationFactory from './reservation';
-import instance from './instance';
+import instance from '../index';
 
 export default function createModels(db = instance.sequelize) {
   const models = {

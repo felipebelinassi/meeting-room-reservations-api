@@ -19,11 +19,10 @@ app.use('/graphql', graphqlHTTP((req) => ({
   context: context(req as Request),
 })));
 
-export function start(port: number): Promise<void> {
-  return new Promise<void>((resolve) => {
+export const start = (port: number): Promise<void> => 
+  new Promise<void>((resolve) => {
     app.listen(port, async () => {
       logger.info(`Application listening at port ${port}`);
       resolve();
     });
   });
-}

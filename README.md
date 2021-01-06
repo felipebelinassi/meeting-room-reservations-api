@@ -1,4 +1,4 @@
-# Meeting room reservations API 🏢
+# 🏢 Meeting room reservations API
 [![Actions Status](https://github.com/felipebelinassi/meeting-room-reservations-api/workflows/Deploy%20Application/badge.svg)](https://github.com/felipebelinassi/meeting-room-reservations-api/actions)
 
 > Express GraphQL API built with TypeScript and PostgreSQL database
@@ -76,7 +76,7 @@ This project uses dotenv package to manage environment variables. To set your va
 *LOGGER_LEVEL* -> Level to log messages  
 *DB_USERNAME* -> PostgreSQL database user  
 *DB_PASSWORD* -> PostgreSQL database password  
-*DB_HOST* -> PostgreSQL host or PostgreSQL container name (if running on Docker)
+*DB_HOST* -> PostgreSQL host or PostgreSQL container name (if running on Docker)  
 *DB_NAME* -> PostgreSQL database name  
 *DB_PORT* -> PostgreSQL database port  
 *DB_DIALECT* -> Database dialect (postgres)  
